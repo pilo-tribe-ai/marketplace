@@ -82,6 +82,50 @@ same content):
   indicators — appropriate task delegation, and scope calibration (not
   over-delegating).
 
+## Description — detail
+
+Three official sub-competencies (name and split confirmed independently by
+the Ringling libguide rubric and The Neuron's explainer; not found on
+aifluencyframework.org itself, which only carries the one-line definition):
+
+1. **Product Description** — define the desired output itself: format, style,
+   tone, length, audience, explicit success criteria. The "what."
+2. **Process Description** — direct how the AI should get there: dialogic,
+   iterative prompting; breaking a task into smaller sequential steps;
+   "think step-by-step" style reasoning direction. The "how."
+3. **Performance Description** — set the terms of the interaction itself: the
+   AI's behavioral role (supportive brainstorming partner vs. critical
+   devil's-advocate vs. concise analyst), when it should ask before guessing,
+   how it should push back. The "how we work together."
+
+**Design-critical findings:**
+- The framework explicitly frames Description as a loop, not a one-shot
+  instruction: the "Description-Discernment loop" — you describe, the AI
+  produces, you assess and re-describe. Quality of collaboration tracks the
+  clarity *and revision* of communication, not the cleverness of a single
+  upfront prompt. This is the main way the course differs from generic
+  prompt-engineering advice, which mostly treats prompting as a one-off
+  artifact to get right the first time.
+- **Performance Description is the systematically neglected sub-part, not
+  Product Description** — the Description analogue of Delegation's
+  "over-delegation is the failure mode." Per the AI Fluency Index (Feb 2026,
+  as reconstructed in the prior-art skill's own reference material): most
+  users already iterate/refine and clarify goals, and many specify output
+  format — but only a minority ever set explicit interaction terms or
+  constraints (i.e., Performance Description). Generic prompt-engineering
+  advice reinforces this gap by covering Product (and sometimes Process) but
+  almost never treating "define the AI's behavioral role/interaction
+  contract" as a first-class, explicit step.
+- Prior-art rubric (n-pillai/ai-fluency-assessment-skill) frames Description
+  as "communicating effectively with AI ... specify goals, constraints,
+  format, tone, and examples clearly ... don't rely on the AI to guess
+  intent; invest in precise setup and iterate deliberately." Its top tier
+  describes Description becoming *systemic* — persistent instruction layers
+  (CLAUDE.md, SKILL.md files), conventional prompt formats, cross-session
+  context preservation — rather than re-specified per prompt. High
+  Description fluency looks like building the kind of skill/instruction
+  infrastructure this plugin itself is, not writing better one-off prompts.
+
 ## Discernment — detail
 
 Three official sub-competencies (course terminology cheat sheet; the lesson
@@ -127,13 +171,10 @@ or the interaction itself):
   direct-use-vs-edited. Lowest rating is "accepts outputs at face value";
   highest is "questions AI logic even on polished outputs."
 
-## Open questions for Description / Diligence skills
+## Open questions for Diligence skill
 
-Capture findings here when we build each:
+Capture findings here when we build it:
 
-- **Description**: likely maps to prompt/context engineering practice —
-  check whether the course's rubric differs meaningfully from generic
-  prompting advice.
 - **Diligence**: check for overlap with Anthropic's usage policies /
   responsible-scaling framing vs. a narrower "own your outputs" framing.
   Discernment's detail section above already found the practical
