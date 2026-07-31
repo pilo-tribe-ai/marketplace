@@ -105,9 +105,9 @@ or the interaction itself):
   mode** — the mirror of Delegation's over-delegation finding. Anthropic's
   Feb 2026 AI Fluency Index found that when output looks finished, users
   fact-check, question reasoning, and identify missing context measurably
-  less often (the prior-art assessment skill, n-pillai, calls this "artifact
-  passivity"). Finished-looking work needs its own explicit checkpoint, not
-  less scrutiny.
+  less often (the prior-art rubric, n-pillai/ai-fluency-assessment-skill,
+  calls this "artifact passivity"). Finished-looking work needs its own
+  explicit checkpoint, not less scrutiny.
 - **Discernment isn't complete at evaluation.** The official lesson treats
   "found a problem but didn't act on it" as incomplete Discernment. A defect
   routes to specific corrective feedback, a revised Description, or — if the

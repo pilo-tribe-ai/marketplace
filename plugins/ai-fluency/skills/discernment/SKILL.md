@@ -11,9 +11,9 @@ description: >-
   user says "looks good" or "ship it" and treats that as permission to move on,
   or says something is still broken after it was called fixed; or when the
   user asks whether AI output can be trusted, or to pressure-test something AI
-  wrote. Applies with more force the more finished the work looks. Not the
-  pre-ship sign-off or release pass — this judges quality, it does not grant
-  approval — and not for deciding who does which part of the work.
+  wrote. Not the pre-ship sign-off or release pass — this judges quality, it
+  does not grant approval — and not for deciding who does which part of the
+  work.
 ---
 
 # Discernment
@@ -21,9 +21,10 @@ description: >-
 Find what is wrong with the work before someone else does, then act on it. The
 failure this prevents is polish standing in for correctness — a green diff, a
 tidy plan, a subagent reporting success all get *less* checking than messy
-output, which is backwards: their defects survive longest. Budget: **one pass
-over what you touched, minutes not tens of minutes**, printing findings only. If
-checking costs more than redoing the work, redo the work.
+output, which is backwards: their defects survive longest. Apply more scrutiny,
+not less, the more finished the work looks. Budget: **one pass over what you
+touched, minutes not tens of minutes**, printing findings only. If checking
+costs more than redoing the work, redo the work.
 
 ## 1. Judge the output against the ask
 
