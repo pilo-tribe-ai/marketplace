@@ -80,7 +80,3 @@ not as an upfront questionnaire.
 - **Scope is fixed.** This decides *who does* the work, never *how much gets
   done*; narrowing the deliverable is the user's call.
 - **Re-assign one component, don't re-plan,** when a fact changes mid-task.
-
-Framework definitions and the Automation / Augmentation / Agency modes:
-`${CLAUDE_PLUGIN_ROOT}/REFERENCE.md` — read only if the user asks about the
-framework itself.

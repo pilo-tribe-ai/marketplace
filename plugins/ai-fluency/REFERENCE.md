@@ -1,9 +1,11 @@
 # AI Fluency Framework — Reference
 
-Shared knowledge base for the `ai-fluency` plugin's skills (Delegation, and the
-Description / Discernment / Diligence skills to follow). Keep this file
-updated as we research each competency — skills should link back here rather
-than re-deriving definitions.
+**Build material, not a runtime artifact.** This is the research base we author
+the skills *from* — Delegation, and the Description / Discernment / Diligence
+skills to follow. Keep it updated as we research each competency, and don't
+link it from a skill body: a skill that tells Claude to read framework theory
+mid-task is paying context for something that doesn't change what it does.
+Skills should encode the framework's conclusions as procedure instead.
 
 ## Provenance
 
