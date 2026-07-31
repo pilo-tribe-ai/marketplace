@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "experimental-plugins",
+  "description": "Tribe AI's marketplace of Claude Code plugins",
+  "owner": {
+    "name": "Tribe AI",
+    "email": "pilom@tribe.ai",
+    "url": "https://github.com/pilo-tribe-ai"
+  },
+  "metadata": {
+    "pluginRoot": "./plugins"
+  },
+  "plugins": []
+}
