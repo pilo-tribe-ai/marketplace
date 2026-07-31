@@ -6,10 +6,10 @@ description: >-
   the moment before calling a plan, diff, analysis, migration, or summary done,
   fixed, or ready, and when a build, test suite, or type check goes green and
   nothing obviously needs looking at. Also use when adopting a subagent's,
-  background job's, or another model's report as input to your own work; when a
-  long task has drifted and the current state may no longer match what was
-  agreed; when the user says "looks good" or "ship it" and you are about to move
-  on, or says something is still broken after you called it fixed; or when the
+  background job's, or another model's report as input; when a long task has
+  drifted and the current state may no longer match what was agreed; when the
+  user says "looks good" or "ship it" and treats that as permission to move on,
+  or says something is still broken after it was called fixed; or when the
   user asks whether AI output can be trusted, or to pressure-test something AI
   wrote. Applies with more force the more finished the work looks. Not the
   pre-ship sign-off or release pass — this judges quality, it does not grant
