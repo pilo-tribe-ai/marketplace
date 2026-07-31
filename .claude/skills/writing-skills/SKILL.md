@@ -36,8 +36,10 @@ visibility: [REFERENCE.md](REFERENCE.md#invocation-and-visibility)):
 - `user-invocable: false` — model-only. For background knowledge that isn't a
   meaningful action to type.
 
-New plugin skills also need a `plugins/` entry in `.claude-plugin/marketplace.json`
-(see the repo README) and a `claude plugin validate .` run.
+A skill added to an already-registered plugin needs no manifest change — skills
+are discovered from `plugins/<plugin>/skills/`. A **new plugin** needs an entry in
+the `plugins` array of `.claude-plugin/marketplace.json` (see the repo README) and
+a `claude plugin validate .` run.
 
 ## Frontmatter
 
@@ -142,6 +144,6 @@ is in [REFERENCE.md](REFERENCE.md#anti-patterns).
 - [ ] Examples concrete; one default recommended rather than a menu of options
 - [ ] Multi-step work has a checklist and a verification loop
 - [ ] Tested in a fresh session; triggering and output checked separately
-- [ ] Plugin skills: marketplace.json updated, `claude plugin validate .` passes
-      (it checks the manifests only — every item above is on you)
+- [ ] New plugin only: marketplace.json entry added, `claude plugin validate .`
+      passes (it checks the manifests only — every item above is on you)
 ```

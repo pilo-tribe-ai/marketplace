@@ -260,8 +260,10 @@ instruction, or enforce it deterministically with a hook.
 
 ## String substitutions
 
-Available in skill body content (and, for the two path variables, in `allowed-tools`
-Bash rules):
+Available in skill body content. Only `${CLAUDE_SKILL_DIR}` and
+`${CLAUDE_PROJECT_DIR}` are *also* substituted in `allowed-tools` Bash rules;
+`${CLAUDE_PLUGIN_ROOT}` is not, so a rule written with it stays a literal string,
+never matches, and the command prompts every time.
 
 | Variable | Meaning |
 |---|---|
@@ -373,7 +375,7 @@ For this repo (`pilo-tribe-ai/marketplace`):
   framework notes, research, design rationale — is not that, and should stay
   unlinked: a skill that reads theory mid-task pays context for something that
   doesn't change what it does. `plugins/ai-fluency/REFERENCE.md` is deliberately
-  unreferenced for exactly this reason.
+  linked only from the plugin README, for humans — never from a skill body.
 - `claude plugin validate .` checks the manifests — `marketplace.json`, or
   `plugin.json` when pointed at a plugin directory — **not** skill frontmatter. A
   skill `name` with uppercase, underscores, or the reserved word `claude` still

@@ -23,7 +23,9 @@ to write than the first real step, you have over-invested — start working.
 
 ## 1. Name the goal and its components
 
-One line for the outcome, then the 3-6 components the task actually breaks into.
+Work out the outcome and the 3-6 components the task actually breaks into. Steps
+1 and 2 are your own reasoning; only step 3 is printed, so the components reach
+the reply folded into its assignment lines rather than as a list of their own.
 
 ## 2. Gate each component before claiming it
 
