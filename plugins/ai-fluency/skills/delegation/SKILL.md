@@ -1,111 +1,86 @@
 ---
 name: delegation
 description: >-
-  Splits a task between Claude and the human before execution starts — what to
-  automate, what to work through together, and what must stay a human decision.
-  Use at the start of any non-trivial task with more than one part: shipping a
-  feature, a migration or refactor, an architecture or tooling choice, a
-  research-then-decide question, debugging of unclear scope, or any request
-  phrased as broad ownership ("take this over", "figure out X", "just get it
-  working"). Also use when work already underway turns out to be larger or more
-  consequential than it looked, or when the user asks how to divide work between
-  them and Claude. Skip single-step edits and pure lookups.
+  Splits a task between Claude and the user before execution starts — what to
+  automate, what to decide together, and what stays a human call. Use once at
+  the start of any task with several parts or real consequences: shipping a
+  feature, a refactor or migration, a schema or API change, a deploy, an
+  architecture or dependency choice, debugging of unclear scope, anything
+  touching production, money, credentials, or people outside the session, and
+  any request phrased as broad ownership ("take this over", "figure out X",
+  "just get it working"). Also use when the user asks how to divide work between
+  them and Claude. Do not use on single-step work — a one-line fix, a lookup,
+  reading a file, running a test, answering a question — and do not re-run it
+  once a split exists.
 ---
 
 # Delegation
 
-Decide who does what before doing it. The failure this prevents is not
-laziness — it is quietly absorbing decisions that belonged to the human and
-then building on guesses about their intent.
+Decide who does what before doing it. The failure this prevents is absorbing
+decisions that belonged to the user and then building on guesses about their
+intent. Budget: **six lines or fewer.** If the split takes longer to write than
+the first real step, you have over-invested — start working.
 
-## Workflow
+## 1. Name the goal and its components
 
-**1. Name the goal in one sentence.** The outcome, not the activity. If you
-cannot write it without inventing a fact, that missing fact is the first thing
-to ask for.
+One line for the outcome, then the 3-6 units of work the task actually contains.
+If you can't state the goal without inventing a fact, that fact is the first
+thing to ask for.
 
-**2. Break the work into components.** Aim for 3–7 pieces that could be
-assigned separately. Don't force an even split — some tasks are 90% one mode.
+## 2. Gate each component before claiming it
 
-**3. Check what this session can actually do.** Before assigning anything to
-yourself, confirm it: which tools and permissions are live, whether you can
-read the relevant code, run the tests, reach the network, see the failing
-output, verify the result. Library versions and APIs may have moved since your
-training cutoff, so check the code and docs rather than recalling them. An
-unverifiable component is not automatable, however easy it looks.
+Yours to automate **only if all three hold**:
 
-**4. Assign a mode per component** — per component, not once for the task.
+- **Verifiable** — you can confirm it worked from here (test, build, type check, diff, output), not by assuming.
+- **Reversible** — a wrong result costs an edit, not an incident.
+- **Specified** — the acceptance criterion already exists in the request, the code, or the tests.
 
-- **Automation** — you execute against a spec that already exists. Use when
-  success is checkable without the human's taste.
-- **Augmentation** — you propose, they steer, iteratively. Use when the goal is
-  under-specified or the answer turns on judgment.
-- **Agency** — you set something up to act on its own later (hooks, scheduled
-  runs, subagents, autofix). Standing up agency is itself a decision the human
-  signs off on, never a convenience you add unasked.
-- **Human-only** — they decide or act; at most you gather the inputs.
+Ask the gate in that direction. "What can I do here?" systematically
+over-assigns; over-delegation, not under-delegation, is the characteristic
+failure here. Whatever fails the gate escalates:
 
-**5. Run the over-delegation pass.** This is the step that earns the skill.
-Over-delegation, not under-delegation, is the characteristic failure mode: a
-split derived only from "what can I do here?" will systematically over-assign.
-Re-read what you just gave yourself and pull back anything that is:
+**Together** (you draft, they decide) — more than one defensible approach with
+different long-term costs; requirements underspecified in a way that changes the
+output; they are the reviewer of an intermediate artifact (plan, schema,
+interface, copy).
 
-- Irreversible or visible outside this machine — pushing, merging, deploying,
-  sending, deleting, spending, changing shared state.
-- A preference rather than a correctness question — product scope, an API shape
-  or name the team lives with, adopting a dependency, trading rigor for speed.
-- Dependent on facts not in the repo or this conversation — deadlines,
-  stakeholder intent, which constraint is real, why the strange code is strange.
-- The definition of done.
-- Cheap for them to answer and expensive for you to be confidently wrong about.
+**Theirs** — effects outside this session (pushes to shared branches, deploys,
+sends, deletes, payments, customer-facing content); facts only they hold
+(priorities, deadlines, audience, acceptable tradeoffs); ground truth your tools
+can't reach (credentials, third-party behavior, whether this is the right
+environment); sign-off that the work is done; standing up anything that acts on
+its own later (hooks, scheduled runs, autofix), never a convenience you add
+unasked. The shortcut: **if you'd have to invent a fact or a preference to
+proceed, that's a human input, not an inference.**
 
-The test: **if you would have to invent a fact or a preference to proceed, that
-is a human input, not an inference.**
-
-**6. State the split and start.** Don't wait for approval on the parts that
-were yours to begin with.
-
-## Output format
-
-A few lines the user can redirect in one message, not a document.
-
-```
-Goal: <one sentence>
-I'll handle: <components>
-Together: <components where you'll steer me>
-Need from you: <the specific decisions or inputs that block me>
-Assuming unless you say otherwise: <the guesses I'm running with>
-```
-
-The assumptions line is what keeps this fast: anything you could otherwise
-proceed on reversibly goes there instead of becoming a question, so the guess
-is visible and cheap to correct without turning the handoff into an interview.
-
-## Example
-
-> "Our API error responses are a mess, can you clean them up?"
+## 3. State the split and start
 
 ```
 Goal: one consistent error shape across the API, adopted everywhere.
-I'll handle: inventory every error path and how it responds today; once the
-  shape is settled, mechanical migration of handlers + tests.
-Together: designing the shape — I'll draft two options against what's already
-  in the codebase.
-Need from you: are external clients depending on the current shapes? If so this
-  is a versioned change, not a cleanup.
-Assuming unless you say otherwise: internal-only, HTTP status codes unchanged,
-  no new dependency.
+I'll automate: inventory every error path; migrate handlers + tests once the shape is settled.
+Together: the shape itself — I'll draft two options against what's already in the codebase.
+Yours: are external clients depending on the current shapes? If so this is a versioned change, not a cleanup.
+Assuming unless you say otherwise: internal-only, status codes unchanged, no new dependency.
 ```
 
-What stayed human: whether this breaks clients, and the final shape — both
-cheap to ask and expensive to guess wrong.
+The assumptions line is what keeps this fast — anything you could proceed on
+reversibly goes there instead of becoming a question. Start the automated
+components immediately, and raise a blocking question when it actually blocks,
+not as an upfront questionnaire.
 
-## For the rest of the task
+## Gotchas
 
-- Re-split when scope changes materially. A task that grew a database migration
-  or a deploy step needs a fresh over-delegation pass, not the original plan.
-- Don't re-litigate a split the user already accepted.
+- **Don't narrate the framework.** No mode taxonomy, no per-component
+  justification, no headings in your reply.
+- **A split is not permission.** Labeling a deploy "yours" and then deploying
+  anyway is the failure this step exists to prevent.
+- **"Together" used as a hedge stalls the task.** If you'd only be asking them
+  to bless something you can verify yourself, automate it.
+- **Don't ask what the repo can answer** — code, tests, and git history first.
+- **Scope is fixed.** This decides *who does* the work, never *how much gets
+  done*; narrowing the deliverable is the user's call.
+- **Re-assign one component, don't re-plan,** when a fact changes mid-task.
 
-Framework definitions, sub-competencies, and sourcing live in
-`${CLAUDE_PLUGIN_ROOT}/REFERENCE.md` — read it only if the user asks about the
-AI Fluency framework itself, not to execute the workflow above.
+Framework definitions and the Automation / Augmentation / Agency modes:
+`${CLAUDE_PLUGIN_ROOT}/REFERENCE.md` — read only if the user asks about the
+framework itself.
