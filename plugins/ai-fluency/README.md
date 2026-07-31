@@ -14,5 +14,5 @@ and design notes shared across all four skills.
 |---|---|---|
 | [`delegation`](./skills/delegation/SKILL.md) | Deciding whether, when, and how to engage AI on each part of a task | Done |
 | `description` | Effectively describing goals to get useful AI output | Planned |
-| `discernment` | Assessing whether AI output is actually good | Planned |
+| [`discernment`](./skills/discernment/SKILL.md) | Assessing whether AI output is actually good | Done |
 | `diligence` | Taking responsibility for AI-assisted work | Planned |

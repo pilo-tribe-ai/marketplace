@@ -82,18 +82,64 @@ same content):
   indicators — appropriate task delegation, and scope calibration (not
   over-delegating).
 
-## Open questions for Description / Discernment / Diligence skills
+## Discernment — detail
+
+Three official sub-competencies (course terminology cheat sheet; the lesson
+distinguishes them by *what's being judged* — the output, the AI's reasoning,
+or the interaction itself):
+
+1. **Product Discernment** — judge the output itself: accuracy,
+   appropriateness, coherence, relevance, and whether it meets requirements
+   and adds real value.
+2. **Process Discernment** — judge how the AI arrived at the output: logical
+   errors, attention lapses, fixation on one interpretation, circular
+   reasoning, or losing track of earlier decisions (e.g. reintroducing an
+   idea the user already rejected).
+3. **Performance Discernment** — judge the interaction itself: whether the
+   AI's communication style, verbosity, and responsiveness to feedback is
+   actually working for this collaboration, independent of whether the
+   output is correct.
+
+**Design-critical findings:**
+- **Uncritical acceptance of polished output is the characteristic failure
+  mode** — the mirror of Delegation's over-delegation finding. Anthropic's
+  Feb 2026 AI Fluency Index found that when output looks finished, users
+  fact-check, question reasoning, and identify missing context measurably
+  less often (the prior-art assessment skill, n-pillai, calls this "artifact
+  passivity"). Finished-looking work needs its own explicit checkpoint, not
+  less scrutiny.
+- **Discernment isn't complete at evaluation.** The official lesson treats
+  "found a problem but didn't act on it" as incomplete Discernment. A defect
+  routes to specific corrective feedback, a revised Description, or — if the
+  tool or approach itself is wrong — back to Delegation.
+- **Discernment and Diligence share activities but split on purpose.**
+  Fact-checking and bias-checking show up in both. Discernment is
+  evaluative/diagnostic ("is this good, what's wrong with it");
+  Diligence is normative/accountable ("am I responsible for using or
+  sharing this"). The same fact-check is Discernment when judging quality
+  and Diligence when it's the basis for shipping or vouching for the result
+  — Diligence's own skill should own "verify before you ship," not
+  duplicate Discernment's quality checks.
+- Prior-art rubric (n-pillai/ai-fluency-assessment-skill) collapses the three
+  official sub-competencies into one aggregate score, tracked via
+  behavioral indicators: identifying missing context, fact-checking,
+  questioning reasoning, catching errors, pushback/requesting revision, and
+  direct-use-vs-edited. Lowest rating is "accepts outputs at face value";
+  highest is "questions AI logic even on polished outputs."
+
+## Open questions for Description / Diligence skills
 
 Capture findings here when we build each:
 
 - **Description**: likely maps to prompt/context engineering practice —
   check whether the course's rubric differs meaningfully from generic
   prompting advice.
-- **Discernment**: check whether the framework provides concrete
-  verification/evaluation criteria beyond "assess usefulness," and whether
-  it connects to Diligence's responsibility framing.
 - **Diligence**: check for overlap with Anthropic's usage policies /
   responsible-scaling framing vs. a narrower "own your outputs" framing.
+  Discernment's detail section above already found the practical
+  Discernment/Diligence boundary (evaluative vs. accountable) — confirm
+  Diligence's own sub-competencies (Creation/Transparency/Deployment
+  Diligence) against that split rather than re-deriving it.
 
 ## Sourcing caveats
 
