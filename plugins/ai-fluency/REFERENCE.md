@@ -1,11 +1,19 @@
 # AI Fluency Framework — Reference
 
 **Build material, not a runtime artifact.** This is the research base we author
-the skills *from* — Delegation, Description, and Discernment are built;
-Diligence is next. Keep it updated as we research each competency, and don't
-link it from a skill body: a skill that tells Claude to read framework theory
-mid-task is paying context for something that doesn't change what it does.
-Skills should encode the framework's conclusions as procedure instead.
+the skills *from* — Delegation, Description, Discernment, and Diligence.
+Keep it updated as the framework or our understanding of it changes, and
+don't link it from a skill body: a skill that tells Claude to read framework
+theory mid-task is paying context for something that doesn't change what it
+does. Skills should encode the framework's conclusions as procedure instead.
+
+**Contents:** [Provenance](#provenance) · [The 4 D's](#the-4-ds-verbatim-official-pdf) ·
+[Three modes of AI interaction](#three-modes-of-ai-interaction) ·
+[Delegation — detail](#delegation--detail) ·
+[Description — detail](#description--detail) ·
+[Discernment — detail](#discernment--detail) ·
+[Diligence — detail](#diligence--detail) ·
+[Sourcing caveats](#sourcing-caveats)
 
 ## Provenance
 
@@ -30,6 +38,7 @@ Canonical sources:
 - Explainer: https://www.theneuron.ai/explainer-articles/inside-anthropics-ai-fluency-masterclass-on-human-ai-collaboration/
 - Anthropic Education Report — AI Fluency Index (Feb 2026): https://www.anthropic.com/research/AI-fluency-index
 - Prior-art Claude Code skill (4D self-assessment): https://github.com/n-pillai/ai-fluency-assessment-skill
+- Diligence one-pager (Anthropic CDN; a second, identical mirror also exists — same document, not independent corroboration): https://www-cdn.anthropic.com/97ccae9e659f590c192de721eff980ba7549535b.pdf
 
 ## The 4 D's (verbatim, official PDF)
 
@@ -170,16 +179,60 @@ or the interaction itself):
   direct-use-vs-edited. Lowest rating is "accepts outputs at face value";
   highest is "questions AI logic even on polished outputs."
 
-## Open questions for Diligence skill
+## Diligence — detail
 
-Capture findings here when we build it:
+Three official sub-competencies (Anthropic's dedicated Diligence one-pager,
+corroborated independently by the Ringling libguide rubric with consistent
+though not identical wording; aifluencyframework.org itself, same pattern
+already found for Description, carries only the one-line top-level
+definition, not the breakdown):
 
-- **Diligence**: check for overlap with Anthropic's usage policies /
-  responsible-scaling framing vs. a narrower "own your outputs" framing.
-  Discernment's detail section above already found the practical
-  Discernment/Diligence boundary (evaluative vs. accountable) — confirm
-  Diligence's own sub-competencies (Creation/Transparency/Deployment
-  Diligence) against that split rather than re-deriving it.
+1. **Creation Diligence** — thoughtful, responsible use of the AI tools
+   themselves: ethical and legal practice, awareness of bias and flaws, and
+   downstream stakeholder impact, applied during the work rather than after.
+2. **Transparency Diligence** — honesty about AI's role in the work, to
+   whoever needs to know it was used.
+3. **Deployment Diligence** — verifying and vouching for outputs before
+   they're used or shared: fact-checking, testing, validating claims.
+
+**Design-critical findings:**
+- **No source maps Diligence onto Automation/Augmentation/Agency** the way
+  Delegation and Description both do — don't force that analogy into the
+  skill; the framework's own material never makes the connection for this D.
+- **No source names a Diligence-specific failure mode**, unlike Delegation's
+  named "over-delegation" or Description's "under-specification." The
+  closest the framework gets is its own caveat: "different contexts
+  (personal, academic, professional) may have different expectations for
+  disclosure and verification" (Diligence one-pager) — Diligence's bar
+  moves with context, it isn't one fixed threshold.
+- **Diligence and Discernment split on purpose, not on activity** — see the
+  Discernment-detail finding above. The same fact-checking and bias-checking
+  shows up under both; Deployment Diligence owns "verify before you ship" as
+  accountability, not a duplicate of Discernment's quality pass.
+- **The prior-art rubric (n-pillai/ai-fluency-assessment-skill) operationalizes
+  Diligence much more narrowly than the official framework** — its five
+  tiers (Developing → Practitioner → Advanced → Expert → Exceptional) are
+  built almost entirely around data-sensitivity/privacy/secrets handling,
+  not the official Creation/Transparency/Deployment split. Treat this as one
+  narrow, security-flavored lens on Diligence, not a restatement of it.
+- The rubric's top tier is systemic again, the same pattern already found
+  for Delegation and Description: "Exceptional" is "infrastructure-level —
+  pre-commit hooks, repo visibility controls, documented privacy rules,
+  automated compliance enforcement," not more careful manual practice. High
+  Diligence fluency looks like enforcement built into the environment, not
+  vigilance applied per task.
+- No usage-prevalence stats exist for Diligence in any source checked — the
+  AI Fluency Index report (Feb 2026) doesn't name Diligence as a scored
+  category at all, and explicitly flags behaviors like "being honest about
+  AI's role" and "considering the consequences of sharing AI-generated
+  output" as ones it structurally cannot observe from chat-interface data.
+  That's an acknowledged measurement gap, not evidence about actual
+  behavior — don't cite it as if it were.
+- **Illustrative worked example, not framework material:** the Ringling
+  libguide's own AI Fluency page models Transparency Diligence in its own
+  footer, disclosing "we maintain full responsibility for the content, its
+  accuracy, and its presentation" regarding its use of Claude to help
+  produce the page.
 
 ## Sourcing caveats
 
