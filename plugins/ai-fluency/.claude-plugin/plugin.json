@@ -1,6 +1,6 @@
 {
   "name": "ai-fluency",
-  "description": "Skills that operationalize Anthropic's AI Fluency framework (Delegation, Description, Discernment, Diligence) during real work with Claude.",
+  "description": "Skills that operationalize the (Anthropic co-authored) AI Fluency framework (Delegation, Description, Discernment, Diligence) during real work with Claude.",
   "version": "0.1.0",
   "author": {
     "name": "Tribe AI",

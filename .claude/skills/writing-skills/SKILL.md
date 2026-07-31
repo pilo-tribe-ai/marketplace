@@ -64,7 +64,9 @@ reason.
 
 ## The description is the whole triggering mechanism
 
-It is the only part always in context. Get it right first.
+It is the part always in context by default. Get it right first —
+`disable-model-invocation: true` is the exception that keeps it out of
+context entirely ([REFERENCE.md](REFERENCE.md#invocation-and-visibility)).
 
 - **Third person, always.** "Extracts tables from PDFs" — never "I can help you…"
   or "You can use this to…". Mixed point-of-view degrades discovery.
