@@ -1,7 +1,7 @@
 # AI Fluency Framework — Reference
 
 **Build material, not a runtime artifact.** This is the research base we author
-the skills *from* — Delegation, and the Description / Discernment / Diligence
+the skills *from* — Delegation and Discernment, and the Description / Diligence
 skills to follow. Keep it updated as we research each competency, and don't
 link it from a skill body: a skill that tells Claude to read framework theory
 mid-task is paying context for something that doesn't change what it does.
