@@ -130,9 +130,10 @@ needs a direction and trust.
 
 ## Progressive disclosure patterns
 
-Three loading levels: metadata always in context → SKILL.md body on trigger →
-bundled files and scripts on demand (zero cost until read; scripts cost only
-their output). Anthropic's own layout convention:
+Three loading levels: metadata in context by default ([exception](#invocation-and-visibility):
+`disable-model-invocation`) → SKILL.md body on trigger → bundled files and
+scripts on demand (zero cost until read; scripts cost only their output).
+Anthropic's own layout convention:
 
 ```
 skill-name/

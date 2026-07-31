@@ -40,7 +40,6 @@ which:
 - **Performance** — the interaction contract: what role you're playing
   (drafting for review vs. executing to spec vs. advising), when you ask
   versus guess, how much you push back before running with something.
-  Almost never stated by anyone — this is the gap to close.
 
 Don't restate Product or Process just to look thorough when they're already
 obvious; that's the bureaucratic version of this skill.

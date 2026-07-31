@@ -103,19 +103,18 @@ aifluencyframework.org itself, which only carries the one-line definition):
   instruction: the "Description-Discernment loop" — you describe, the AI
   produces, you assess and re-describe. Quality of collaboration tracks the
   clarity *and revision* of communication, not the cleverness of a single
-  upfront prompt. This is the main way the course differs from generic
-  prompt-engineering advice, which mostly treats prompting as a one-off
-  artifact to get right the first time.
+  upfront prompt. This differs from generic prompt-engineering advice two
+  ways: (a) it frames Description as an iterative loop, not a one-shot
+  artifact to get right the first time; (b) it treats Performance as an
+  explicit step, which generic advice — covering Product and sometimes
+  Process — almost never does.
 - **Performance Description is the systematically neglected sub-part, not
   Product Description** — the Description analogue of Delegation's
   "over-delegation is the failure mode." Per the AI Fluency Index (Feb 2026,
   as reconstructed in the prior-art skill's own reference material): most
   users already iterate/refine and clarify goals, and many specify output
   format — but only a minority ever set explicit interaction terms or
-  constraints (i.e., Performance Description). Generic prompt-engineering
-  advice reinforces this gap by covering Product (and sometimes Process) but
-  almost never treating "define the AI's behavioral role/interaction
-  contract" as a first-class, explicit step.
+  constraints (i.e., Performance Description).
 - Prior-art rubric (n-pillai/ai-fluency-assessment-skill) frames Description
   as "communicating effectively with AI ... specify goals, constraints,
   format, tone, and examples clearly ... don't rely on the AI to guess
