@@ -7,8 +7,10 @@
     "email": "pilom@tribe.ai",
     "url": "https://github.com/pilo-tribe-ai"
   },
-  "metadata": {
-    "pluginRoot": "./plugins"
-  },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "ai-fluency",
+      "source": "./plugins/ai-fluency"
+    }
+  ]
 }
