@@ -23,9 +23,9 @@ Exhaustive companion to [SKILL.md](SKILL.md). Read the section you need.
 
 ## Frontmatter fields
 
-In Claude Code every field is optional; only `description` is *recommended*. The
-Agent Skills standard (and the Claude API) treat `name` and `description` as
-required, so write both. Booleans accept `true/false/yes/no/on/off/1/0`.
+Every field is optional in Claude Code; write `name` and `description` anyway
+([why](#doc-discrepancies-to-be-aware-of)). Booleans accept
+`true/false/yes/no/on/off/1/0`.
 
 | Field | Semantics |
 |---|---|
@@ -368,11 +368,18 @@ For this repo (`pilo-tribe-ai/marketplace`):
   bare `/<name>` also works unless another command claims it.
 - A plugin with a root `SKILL.md`, no `skills/` directory and no `skills` manifest
   field loads as a single-skill plugin.
-- Plugin-wide shared material (like `plugins/ai-fluency/REFERENCE.md`) is reached
-  from a skill body as `${CLAUDE_PLUGIN_ROOT}/REFERENCE.md`.
-- Register the plugin in `.claude-plugin/marketplace.json`, then
-  `claude plugin validate .`, then test with `/plugin marketplace add ./`,
-  `/plugin install <plugin>@experimental-plugins`, `/reload-plugins`.
+- Material several of a plugin's skills genuinely need *at runtime* is reached
+  from a skill body as `${CLAUDE_PLUGIN_ROOT}/<file>.md`. Build material —
+  framework notes, research, design rationale — is not that, and should stay
+  unlinked: a skill that reads theory mid-task pays context for something that
+  doesn't change what it does. `plugins/ai-fluency/REFERENCE.md` is deliberately
+  unreferenced for exactly this reason.
+- `claude plugin validate .` checks the manifests — `marketplace.json`, or
+  `plugin.json` when pointed at a plugin directory — **not** skill frontmatter. A
+  skill `name` with uppercase, underscores, or the reserved word `claude` still
+  passes.
+- Registering, validating and locally testing a plugin: the repo README's
+  "Adding a plugin" is the source of truth for that sequence.
 - `skillOverrides` does not affect plugin skills. Live change detection covers
   `SKILL.md` text; changes to a plugin's `hooks/`, `agents/`, `.mcp.json` need
   `/reload-plugins`.

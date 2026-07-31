@@ -9,11 +9,9 @@ description: >-
   touching production, money, credentials, or people outside the session, and
   any request phrased as broad ownership ("take this over", "figure out X",
   "just get it working"). Also use when the user asks how to divide work between
-  them and Claude. Not about dispatching subagents or background sessions — this
-  splits work between Claude and the human, not between Claude and other agents.
-  Do not use on single-step work — a one-line fix, a lookup, reading a file,
-  running a test, answering a question — and do not re-run it once a split
-  exists.
+  them and Claude. Not for dispatching subagents or background sessions. Do not
+  use on single-step work — a one-line fix, a lookup, reading a file, running a
+  test, answering a question.
 ---
 
 # Delegation
@@ -35,14 +33,15 @@ Claim a component as **I'll automate** only if all three hold:
 - **Reversible** — a wrong result costs an edit, not an incident.
 - **Specified** — the acceptance criterion already exists in the request, the code, or the tests.
 
-Ask the gate in that direction. "What can I do here?" systematically
-over-assigns; over-delegation, not under-delegation, is the characteristic
-failure here. Whatever fails the gate escalates:
+Ask the gate in that direction — "What can I do here?" systematically
+over-assigns, and over-delegation is this step's characteristic failure.
+Whatever fails the gate escalates:
 
 **Together** (you draft, they decide) — more than one defensible approach with
 different long-term costs; requirements underspecified in a way that changes the
 output; they are the reviewer of an intermediate artifact (plan, schema,
-interface, copy).
+interface, copy). Never a hedge for something you could verify yourself — that
+stalls the task.
 
 **Yours** (the user's) — effects outside this session (pushes to shared
 branches, deploys, sends, deletes, payments, customer-facing content); facts
@@ -74,8 +73,6 @@ not as an upfront questionnaire.
   justification, no headings in your reply.
 - **A split is not permission.** Labeling a deploy "yours" and then deploying
   anyway is the failure this step exists to prevent.
-- **"Together" used as a hedge stalls the task.** If you'd only be asking them
-  to bless something you can verify yourself, automate it.
 - **Don't ask what the repo can answer** — code, tests, and git history first.
 - **Scope is fixed.** This decides *who does* the work, never *how much gets
   done*; narrowing the deliverable is the user's call.

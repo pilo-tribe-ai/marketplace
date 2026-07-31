@@ -53,7 +53,7 @@ Delegation:
 - **Augmentation** — "Humans and AI collaborate as thinking partner"
 - **Agency** — "Humans configure AI to independently perform future tasks on their behalf"
 
-## Delegation — detail (skill already built)
+## Delegation — detail
 
 Three official sub-competencies (Anthropic course calls the first one
 "Problem Awareness"; the academic paper calls it "Goal and Task Awareness" —
@@ -84,7 +84,7 @@ same content):
 
 ## Open questions for Description / Discernment / Diligence skills
 
-Not yet researched in depth — capture findings here when we build each:
+Capture findings here when we build each:
 
 - **Description**: likely maps to prompt/context engineering practice —
   check whether the course's rubric differs meaningfully from generic
@@ -99,6 +99,4 @@ Not yet researched in depth — capture findings here when we build each:
 
 Skilljar lesson bodies are login-gated, so exact lesson wording (e.g. the
 Lesson 4 worksheet criteria) comes from third-party reconstructions, not
-Anthropic's own text. The 4 D's table above and the sub-competency
-definitions are from the official CC-licensed PDF and are safe to quote
-directly with attribution.
+Anthropic's own text.

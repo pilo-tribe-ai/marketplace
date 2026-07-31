@@ -5,10 +5,11 @@ description: Authoring guidance for Claude Code Skills in this marketplace repo 
 
 # Writing skills
 
-Distilled from Anthropic's official guidance (sources at the bottom). Apply it
-to skills in this marketplace — `plugins/<plugin>/skills/<name>/SKILL.md` — and
-to repo-local ones in `.claude/skills/`. Each section below flags when to jump
-into [REFERENCE.md](REFERENCE.md) for the exhaustive version.
+Distilled from Anthropic's official guidance
+([sources](REFERENCE.md#sources)). Applies to skills in this marketplace —
+`plugins/<plugin>/skills/<name>/SKILL.md` — and to repo-local ones in
+`.claude/skills/`. Sections link into [REFERENCE.md](REFERENCE.md) where the
+exhaustive version matters.
 
 ## First decide whether it should be a skill
 
@@ -27,7 +28,8 @@ into [REFERENCE.md](REFERENCE.md) for the exhaustive version.
 | `.claude/skills/<name>/SKILL.md` | `/<name>` | you and Claude |
 
 **Both are model- and user-invocable by default — no frontmatter needed for
-that.** Only restrict deliberately:
+that.** Only restrict deliberately (what each flag does to loading and
+visibility: [REFERENCE.md](REFERENCE.md#invocation-and-visibility)):
 
 - `disable-model-invocation: true` — user-only. For side-effecting workflows
   (deploy, commit, send) where *you* choose the timing.
@@ -53,11 +55,10 @@ directory name), but write both: `description` drives triggering, and `name`
 keeps the skill valid under the Agent Skills standard. In a **plugin** skill
 `name` sets the last command segment, so keep it equal to the directory name.
 
-Other fields worth knowing — `allowed-tools`, `disallowed-tools`, `when_to_use`,
-`argument-hint`, `arguments`, `model`, `effort`, `context`, `agent`,
-`background`, `paths`, `hooks` — are tabulated in
-[REFERENCE.md](REFERENCE.md#frontmatter-fields); check there before adding one
-you haven't used before. Don't add one without a reason.
+Every other field — `allowed-tools`, `context`/`agent`, `paths`, `hooks`, and
+the rest — is tabulated in [REFERENCE.md](REFERENCE.md#frontmatter-fields);
+check there before adding one you haven't used before. Don't add one without a
+reason.
 
 ## The description is the whole triggering mechanism
 
@@ -73,12 +74,15 @@ It is the only part always in context. Get it right first.
   or when the user mentions Y or Z, even if they don't say "<skill name>".`
 - **Say when *not* to trigger** if a neighbouring skill could claim the request.
 
-Vague descriptions (`Helps with documents`) are the top reason a skill never fires.
+Worked good/bad examples, and the negative-boundary pattern for competing
+sibling skills: [REFERENCE.md](REFERENCE.md#description-patterns). Vague
+descriptions are the top reason a skill never fires.
 
 ## Body: keep it short, imperative, and load-on-demand
 
 Once invoked, the body sits in context for the rest of the session — every line
-is a recurring cost.
+is a recurring cost. The full anti-pattern list, with Anthropic's own examples,
+is in [REFERENCE.md](REFERENCE.md#anti-patterns).
 
 - **Assume Claude is smart.** Only add what it doesn't already know. Delete any
   paragraph that explains a well-known concept or restates the description.
@@ -139,12 +143,5 @@ is a recurring cost.
 - [ ] Multi-step work has a checklist and a verification loop
 - [ ] Tested in a fresh session; triggering and output checked separately
 - [ ] Plugin skills: marketplace.json updated, `claude plugin validate .` passes
+      (it checks the manifests only — every item above is on you)
 ```
-
-## Sources
-
-- [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) — the canonical writing guide
-- [Extend Claude with skills](https://code.claude.com/docs/en/skills) — Claude Code frontmatter, invocation, lifecycle
-- [Plugins reference](https://code.claude.com/docs/en/plugins-reference) — plugin skill layout and path variables
-- [anthropics/skills](https://github.com/anthropics/skills) — Anthropic's own skills, incl. the `skill-creator` meta-skill
-- [Evaluating skills](https://agentskills.io/skill-creation/evaluating-skills) — eval format and iteration loop

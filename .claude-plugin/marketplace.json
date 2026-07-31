@@ -13,8 +13,7 @@
   "plugins": [
     {
       "name": "ai-fluency",
-      "source": "./plugins/ai-fluency",
-      "description": "Skills that operationalize Anthropic's AI Fluency framework (Delegation, Description, Discernment, Diligence) during real work with Claude."
+      "source": "./plugins/ai-fluency"
     }
   ]
 }

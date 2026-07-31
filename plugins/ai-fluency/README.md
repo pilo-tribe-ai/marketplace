@@ -12,7 +12,7 @@ and design notes shared across all four skills.
 
 | Skill | Competency | Status |
 |---|---|---|
-| [`delegation`](./skills/delegation/SKILL.md) | Deciding what to automate, do collaboratively, or keep human, before starting a task | Done |
+| [`delegation`](./skills/delegation/SKILL.md) | Deciding whether, when, and how to engage AI on each part of a task | Done |
 | `description` | Effectively describing goals to get useful AI output | Planned |
 | `discernment` | Assessing whether AI output is actually good | Planned |
 | `diligence` | Taking responsibility for AI-assisted work | Planned |
