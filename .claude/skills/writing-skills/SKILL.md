@@ -5,10 +5,10 @@ description: Authoring guidance for Claude Code Skills in this marketplace repo 
 
 # Writing skills
 
-Distilled from Anthropic's official guidance (sources at the bottom; full detail
-in [REFERENCE.md](REFERENCE.md)). Apply it to skills in this marketplace —
-`plugins/<plugin>/skills/<name>/SKILL.md` — and to repo-local ones in
-`.claude/skills/`.
+Distilled from Anthropic's official guidance (sources at the bottom). Apply it
+to skills in this marketplace — `plugins/<plugin>/skills/<name>/SKILL.md` — and
+to repo-local ones in `.claude/skills/`. Each section below flags when to jump
+into [REFERENCE.md](REFERENCE.md) for the exhaustive version.
 
 ## First decide whether it should be a skill
 
@@ -56,7 +56,8 @@ keeps the skill valid under the Agent Skills standard. In a **plugin** skill
 Other fields worth knowing — `allowed-tools`, `disallowed-tools`, `when_to_use`,
 `argument-hint`, `arguments`, `model`, `effort`, `context`, `agent`,
 `background`, `paths`, `hooks` — are tabulated in
-[REFERENCE.md](REFERENCE.md#frontmatter-fields). Don't add one without a reason.
+[REFERENCE.md](REFERENCE.md#frontmatter-fields); check there before adding one
+you haven't used before. Don't add one without a reason.
 
 ## The description is the whole triggering mechanism
 
@@ -87,20 +88,25 @@ is a recurring cost.
   reframe as the reason the constraint exists. Reserve hard directives for
   genuinely fragile steps.
 - **Match freedom to fragility.** Prose for judgment calls; an exact command for
-  error-prone sequences. See [REFERENCE.md](REFERENCE.md#degrees-of-freedom).
+  error-prone sequences. Read [REFERENCE.md](REFERENCE.md#degrees-of-freedom)
+  when unsure which fits.
 - **Under 500 lines.** Approaching it means splitting, not trimming prose.
 - **Progressive disclosure, one level deep.** SKILL.md is a table of contents:
-  point to `REFERENCE.md`, `references/<domain>.md`, `scripts/`, `assets/` and
-  say *when* to read each. Never chain SKILL.md → a.md → b.md; Claude partially
-  reads nested files. Give any reference file over ~100 lines a table of contents.
+  point to a reference file, `scripts/`, or `assets/` and say *when* to read
+  each. Never chain SKILL.md → a.md → b.md; Claude partially reads nested files.
+  Give any reference file over ~100 lines a table of contents.
 - **One term per concept.** Don't alternate field/box/element.
 - **No dates or "as of now".** Put superseded material under an `## Old patterns`
   `<details>` block instead.
-- **Reference bundled files with `${CLAUDE_PLUGIN_ROOT}`** (plugin-wide files) or
-  `${CLAUDE_SKILL_DIR}` (the skill's own directory) so paths resolve wherever the
-  skill is installed. Forward slashes only.
+- **Point to files this skill bundles by path variable, not a hardcoded path**,
+  so they resolve wherever the skill is installed: one variable for the plugin's
+  shared root, another for this skill's own directory. Forward slashes only.
+  Exact variable names and syntax: [REFERENCE.md](REFERENCE.md#string-substitutions)
+  — read it the first time you bundle a file (naming the variables here would
+  itself get substituted away, which is exactly the bug to avoid).
 - **Give multi-step work a copyable checklist** and a validate → fix → re-check
-  loop. Patterns in [REFERENCE.md](REFERENCE.md#workflow-and-feedback-loop-patterns).
+  loop. Read [REFERENCE.md](REFERENCE.md#workflow-and-feedback-loop-patterns)
+  once a skill has more than a couple of sequential steps.
 
 ## Authoring workflow
 
@@ -108,7 +114,7 @@ is a recurring cost.
    to supply repeatedly. Write the skill for *that*, not for imagined needs.
 2. **Draft frontmatter first** — name, then description with explicit triggers.
 3. **Write the minimum body** that closes the gap. Push exhaustive material into
-   sibling files as you go.
+   reference files as you go.
 4. **Re-read with fresh eyes and cut.** Ask of each paragraph: does Claude
    already know this? Does it earn its tokens?
 5. **Test in a fresh session** — leftover authoring context hides gaps. Check two
@@ -126,8 +132,8 @@ is a recurring cost.
 - [ ] Description states what it does AND concrete triggers, key use case first
 - [ ] Invocation defaults left alone unless there's a reason to restrict
 - [ ] Body under 500 lines, imperative, no persona preamble, no restated description
-- [ ] References are one level deep, each with a stated "read this when…"
-- [ ] Bundled paths use ${CLAUDE_PLUGIN_ROOT} / ${CLAUDE_SKILL_DIR}, forward slashes
+- [ ] Reference files are one level deep, each with a stated "read this when…"
+- [ ] Bundled files use a path variable (plugin root / skill dir), not a hardcoded path; forward slashes
 - [ ] Consistent terminology; no dates or time-sensitive claims
 - [ ] Examples concrete; one default recommended rather than a menu of options
 - [ ] Multi-step work has a checklist and a verification loop

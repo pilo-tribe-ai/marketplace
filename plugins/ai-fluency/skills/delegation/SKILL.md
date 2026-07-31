@@ -9,27 +9,27 @@ description: >-
   touching production, money, credentials, or people outside the session, and
   any request phrased as broad ownership ("take this over", "figure out X",
   "just get it working"). Also use when the user asks how to divide work between
-  them and Claude. Do not use on single-step work — a one-line fix, a lookup,
-  reading a file, running a test, answering a question — and do not re-run it
-  once a split exists.
+  them and Claude. Not about dispatching subagents or background sessions — this
+  splits work between Claude and the human, not between Claude and other agents.
+  Do not use on single-step work — a one-line fix, a lookup, reading a file,
+  running a test, answering a question — and do not re-run it once a split
+  exists.
 ---
 
 # Delegation
 
 Decide who does what before doing it. The failure this prevents is absorbing
 decisions that belonged to the user and then building on guesses about their
-intent. Budget: **six lines or fewer.** If the split takes longer to write than
-the first real step, you have over-invested — start working.
+intent. Budget: **six lines or fewer in your reply.** If the split takes longer
+to write than the first real step, you have over-invested — start working.
 
 ## 1. Name the goal and its components
 
-One line for the outcome, then the 3-6 units of work the task actually contains.
-If you can't state the goal without inventing a fact, that fact is the first
-thing to ask for.
+One line for the outcome, then the 3-6 components the task actually breaks into.
 
 ## 2. Gate each component before claiming it
 
-Yours to automate **only if all three hold**:
+Claim a component as **I'll automate** only if all three hold:
 
 - **Verifiable** — you can confirm it worked from here (test, build, type check, diff, output), not by assuming.
 - **Reversible** — a wrong result costs an edit, not an incident.
@@ -44,14 +44,14 @@ different long-term costs; requirements underspecified in a way that changes the
 output; they are the reviewer of an intermediate artifact (plan, schema,
 interface, copy).
 
-**Theirs** — effects outside this session (pushes to shared branches, deploys,
-sends, deletes, payments, customer-facing content); facts only they hold
-(priorities, deadlines, audience, acceptable tradeoffs); ground truth your tools
-can't reach (credentials, third-party behavior, whether this is the right
-environment); sign-off that the work is done; standing up anything that acts on
-its own later (hooks, scheduled runs, autofix), never a convenience you add
-unasked. The shortcut: **if you'd have to invent a fact or a preference to
-proceed, that's a human input, not an inference.**
+**Yours** (the user's) — effects outside this session (pushes to shared
+branches, deploys, sends, deletes, payments, customer-facing content); facts
+only they hold (priorities, deadlines, audience, acceptable tradeoffs); ground
+truth your tools can't reach (credentials, third-party behavior, whether this is
+the right environment); sign-off that the work is done; standing up anything
+that acts on its own later (hooks, scheduled runs, autofix), never a convenience
+you add unasked. The shortcut: **if you'd have to invent a fact or a preference
+to proceed, that's a human input, not an inference.**
 
 ## 3. State the split and start
 
