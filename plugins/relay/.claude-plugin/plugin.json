@@ -1,0 +1,27 @@
+{
+  "name": "relay",
+  "displayName": "Relay",
+  "version": "4.52.0",
+  "description": "Multi-agent orchestration toolkit for Claude Code \u2014 ACPX-driven parallel implementation + adversarial refinement loops, layered on superpowers.",
+  "author": {
+    "name": "Yassel Piloto",
+    "email": "yasselpiloto@gmail.com"
+  },
+  "homepage": "https://github.com/ai-advanced-futures/claude-code-dev-plugins",
+  "repository": "https://github.com/ai-advanced-futures/claude-code-dev-plugins",
+  "license": "MIT",
+  "keywords": [
+    "orchestration",
+    "multi-agent",
+    "acpx",
+    "refinement",
+    "implementation",
+    "subagents",
+    "tdd",
+    "spec",
+    "plan",
+    "pr-review",
+    "superpowers",
+    "relay"
+  ]
+}

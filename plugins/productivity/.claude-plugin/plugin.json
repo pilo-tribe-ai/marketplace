@@ -1,0 +1,18 @@
+{
+  "name": "productivity",
+  "version": "0.9.0",
+  "description": "productivity (v0.9.0) — session-productivity skills for handing off, dispatching, and wrapping up work across sessions and agents",
+  "author": {
+    "name": "ai-advanced-futures",
+    "email": "luis@ai-advanced-futures.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "productivity",
+    "handoff",
+    "dispatch",
+    "wrapup",
+    "context",
+    "session"
+  ]
+}

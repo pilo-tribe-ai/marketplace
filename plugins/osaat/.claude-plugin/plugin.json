@@ -1,0 +1,16 @@
+{
+  "name": "osaat",
+  "version": "1.0.1",
+  "description": "Execute any series of steps one at a time with explicit confirmation between each step",
+  "author": {
+    "name": "LFA"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/lamadeo/lfa-cc-marketplace",
+  "repository": "https://github.com/lamadeo/lfa-cc-marketplace",
+  "keywords": [
+    "interactive",
+    "workflow",
+    "productivity"
+  ]
+}

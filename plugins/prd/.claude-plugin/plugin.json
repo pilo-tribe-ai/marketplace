@@ -1,0 +1,13 @@
+{
+  "name": "prd",
+  "version": "3.0.2",
+  "description": "Product-level PRD creation and roadmap planning through lens-driven Socratic exploration, with PRD-to-roadmap traceability and requirement drift detection",
+  "author": {
+    "name": "404pilo Platform Engineering",
+    "email": "404.pilo.code@gmail.com"
+  },
+  "homepage": "https://github.com/404pilo/claude-code.marketplace",
+  "repository": "https://github.com/404pilo/claude-code.marketplace",
+  "license": "MIT",
+  "keywords": ["prd", "requirements", "socratic", "analysis", "product", "opus", "roadmap", "milestones", "stories", "estimation", "agile", "simulate", "gaps", "lenses", "personas", "journeys", "traceability", "roadmap-sync", "status-tracking", "plan"]
+}

@@ -1,0 +1,106 @@
+name: Sync upstream plugins
+
+# Copies the mirrored plugins from the private upstream monorepo and opens a
+# pull request when something changed.
+#
+# Setup, done once:
+#   1. Make an SSH key pair with no passphrase.
+#   2. Add the public key to the upstream repository as a deploy key.
+#      Leave "Allow write access" off. The sync only reads.
+#   3. Add the private key to this repository as the secret
+#      UPSTREAM_DEPLOY_KEY.
+
+on:
+  schedule:
+    # 06:00 UTC, every day.
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Upstream branch or tag to copy from"
+        required: false
+        default: "main"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install the read-only deploy key
+        env:
+          UPSTREAM_DEPLOY_KEY: ${{ secrets.UPSTREAM_DEPLOY_KEY }}
+        run: |
+          if [ -z "$UPSTREAM_DEPLOY_KEY" ]; then
+            echo "::error::The secret UPSTREAM_DEPLOY_KEY is not set. See the comment at the top of this workflow."
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          printf '%s\n' "$UPSTREAM_DEPLOY_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -t rsa,ecdsa,ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Copy the plugins
+        env:
+          UPSTREAM_REF: ${{ inputs.ref || 'main' }}
+        run: scripts/sync-upstream.sh
+
+      - name: Check the result
+        run: |
+          python3 -c "
+          import json, pathlib, sys
+          root = pathlib.Path('.')
+          manifest = json.loads((root / '.claude-plugin/marketplace.json').read_text())
+          bad = 0
+          for entry in manifest['plugins']:
+              source = entry['source']
+              if not isinstance(source, str):
+                  continue
+              plugin = root / source[2:] / '.claude-plugin/plugin.json'
+              if not plugin.is_file():
+                  print(f'error: {entry[\"name\"]} has no {plugin}')
+                  bad = 1
+                  continue
+              json.loads(plugin.read_text())
+          sys.exit(bad)
+          "
+          echo "Manifest and plugin manifests parse."
+
+      - name: Open a pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Nothing changed upstream."
+            exit 0
+          fi
+
+          commit="$(jq -r .commit .upstream-sync.json)"
+          branch="sync-upstream"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add -A
+          git commit -m "Sync plugins from upstream ${commit:0:7}"
+          git push --force-with-lease origin "$branch"
+
+          body="$(printf 'Mirrored from upstream commit `%s`.\n\n## Plugin versions\n\n```json\n%s\n```\n' \
+            "$commit" "$(jq .plugins .upstream-sync.json)")"
+
+          state="$(gh pr view "$branch" --json state -q .state 2>/dev/null || true)"
+          if [ "$state" = "OPEN" ]; then
+            gh pr edit "$branch" --body "$body"
+            echo "Updated the open pull request."
+          else
+            gh pr create --base main --head "$branch" \
+              --title "Sync plugins from upstream" --body "$body"
+          fi

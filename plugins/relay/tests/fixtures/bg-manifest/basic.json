@@ -1,0 +1,21 @@
+{
+  "runid": "9a3f2c",
+  "command": "implement",
+  "started_at": "2026-08-18T12:00:00.000Z",
+  "sessions": [
+    {
+      "name": "roi-dashboard-operator-feature-a-9a3f2c",
+      "launch_id": "op123abc",
+      "role": "operator",
+      "parent": "MAIN",
+      "phase": "spawned"
+    },
+    {
+      "name": "roi-dashboard-implementer-feature-a-9a3f2c",
+      "launch_id": "wk456def",
+      "role": "implementer",
+      "parent": "roi-dashboard-operator-feature-a-9a3f2c",
+      "phase": "done"
+    }
+  ]
+}

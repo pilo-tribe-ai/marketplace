@@ -1,0 +1,21 @@
+{
+  "name": "prompt-fit",
+  "displayName": "Prompt Fit",
+  "version": "0.1.0",
+  "description": "Measures any prompt, skill, command, agent or plugin against the August 2026 prompt engineering principles, then shrinks it. Counts instructions rather than tokens, and proves the revision moved the count.",
+  "author": {
+    "name": "Yassel Piloto",
+    "email": "yasselpiloto@gmail.com"
+  },
+  "homepage": "https://github.com/ai-advanced-futures/claude-code-dev-plugins",
+  "repository": "https://github.com/ai-advanced-futures/claude-code-dev-plugins",
+  "license": "MIT",
+  "keywords": [
+    "prompt-engineering",
+    "context-engineering",
+    "lint",
+    "review",
+    "skills",
+    "system-prompt"
+  ]
+}

@@ -1,0 +1,1 @@
+Add a relay skill that summarizes a PR diff into a one-paragraph release note.

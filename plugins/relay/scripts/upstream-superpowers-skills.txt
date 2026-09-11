@@ -1,0 +1,18 @@
+# relay upstream-skill manifest. Columns (whitespace-separated): <skill-name> <github-repo> <subpath>
+# The obra/superpowers rows are the CLOSED upstream set assertion (e) enforces.
+# The single non-obra row (engineering) is provisioned for codex but is NOT part of that set.
+brainstorming                  obra/superpowers   skills/brainstorming
+dispatching-parallel-agents    obra/superpowers   skills/dispatching-parallel-agents
+executing-plans                obra/superpowers   skills/executing-plans
+finishing-a-development-branch obra/superpowers   skills/finishing-a-development-branch
+receiving-code-review          obra/superpowers   skills/receiving-code-review
+requesting-code-review         obra/superpowers   skills/requesting-code-review
+subagent-driven-development    obra/superpowers   skills/subagent-driven-development
+systematic-debugging           obra/superpowers   skills/systematic-debugging
+test-driven-development        obra/superpowers   skills/test-driven-development
+using-git-worktrees            obra/superpowers   skills/using-git-worktrees
+using-superpowers              obra/superpowers   skills/using-superpowers
+verification-before-completion obra/superpowers   skills/verification-before-completion
+writing-plans                  obra/superpowers   skills/writing-plans
+writing-skills                 obra/superpowers   skills/writing-skills
+engineering                    mattpocock/skills  skills/engineering

@@ -1,0 +1,13 @@
+{
+  "name": "thinktank",
+  "version": "1.0.1",
+  "description": "Structured multi-agent strategic analysis and Socratic deliberation for optimal implementation decisions",
+  "author": {
+    "name": "404pilo",
+    "email": "404.pilo.code@gmail.com"
+  },
+  "homepage": "https://github.com/404pilo/claude-code.marketplace",
+  "repository": "https://github.com/404pilo/claude-code.marketplace",
+  "license": "MIT",
+  "keywords": ["analysis", "strategy", "debate", "multi-agent", "decision-making"]
+}

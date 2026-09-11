@@ -1,0 +1,2 @@
+{"jsonrpc":"2.0","id":3,"error":{"code":-32603,"message":"Failed to replay saved session model \"gpt-5.6-luna\": agent did not advertise that model"}}
+{"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"sess-1","update":{"sessionUpdate":"agent_message_chunk","messageId":"msg_c","content":{"type":"text","text":"STATUS=ok\nROLE_DONE"},"_meta":null}}}

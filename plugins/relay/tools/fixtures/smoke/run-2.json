@@ -1,0 +1,3 @@
+{"phases":["classify","refine-spec","refine-plan","delegate-leaf","verify"],
+ "agents":["spec-refiner","plan-refiner","implementer","verifier"],
+ "edges":["spec-clean->plan","plan-clean->implement","verify-pass->done"]}

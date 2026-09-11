@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-advanced-futures.github.io/adr/adr.schema.json",
+  "title": "Architecture decision record",
+  "description": "Frontmatter shape for one ADR. The filename is the identity; there is no id field. adr_lint.py hand-checks these rules and never loads a JSON Schema validator, because the deterministic tier stays standard-library only.",
+  "type": "object",
+  "required": ["type", "status", "date", "title"],
+  "additionalProperties": false,
+  "properties": {
+    "type": {"const": "adr"},
+    "status": {"enum": ["proposed", "accepted", "deprecated", "superseded"]},
+    "date": {"type": "string", "format": "date"},
+    "title": {"type": "string", "minLength": 1},
+    "area": {"type": ["string", "null"]},
+    "supersedes": {"$ref": "#/$defs/refs"},
+    "superseded_by": {"$ref": "#/$defs/refs"},
+    "related": {"$ref": "#/$defs/refs"}
+  },
+  "$defs": {
+    "refs": {
+      "description": "Filenames inside the corpus directory, never numbers.",
+      "oneOf": [
+        {"type": "null"},
+        {"type": "string"},
+        {"type": "array", "items": {"type": "string"}}
+      ]
+    }
+  }
+}

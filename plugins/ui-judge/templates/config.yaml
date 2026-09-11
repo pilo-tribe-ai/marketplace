@@ -1,0 +1,38 @@
+# Written by /ui-judge:setup. Edit it by hand whenever you like.
+
+# Where the application is reachable.
+base_url: http://localhost:3000
+
+# How to start the application. Leave empty when it is already running.
+start_command: npm run dev
+
+# How to put the data back to a known state before each mission.
+# Leave empty when the application needs no reset.
+reset_command: npm run db:seed
+
+# Where the missions live, relative to this file.
+missions_dir: missions
+
+# Missions run one after another. Two missions running together can change the
+# same data, and then a failure does not say which mission caused it.
+run_missions: one-after-another
+
+# How many times a mission must pass in a row before it can be compiled into a
+# Playwright test. A mission that passes only sometimes makes a test that fails
+# at random, and a test that fails at random gets switched off.
+passes_needed_to_compile: 3
+
+# The most steps a single mission may take before it stops and reports.
+step_budget: 60
+
+# The people the missions sign in as. The details live in credentials.md.
+# storage_state is read relative to this file, as missions_dir is. It holds a
+# live sign-in, and only .uijudge/auth/ is kept out of the repository.
+roles:
+  - name: shopper
+    storage_state: auth/shopper.json
+
+# The browser may reach these hosts and no others. This stops free exploration
+# from leaving the application.
+allowed_origins:
+  - http://localhost:3000

@@ -1,0 +1,5 @@
+# Dev-only. For a human running the vendored test suite by hand:
+#   pip install -r scripts/adr/requirements.txt && python3 -m pytest tests/adr/
+# No runtime script (adr_lint.py, adr_index.py, adr_new.py, adr_migrate.py)
+# installs this or anything else. All four stay runnable with bare python3.
+pytest

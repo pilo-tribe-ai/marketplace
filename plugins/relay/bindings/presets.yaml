@@ -1,0 +1,538 @@
+# bindings/presets.yaml — role-slug-keyed dispatcher map (spec §5).
+# Each key resolves per §5 resolution order:
+#   RELAY_ROLE_PATH override → roles/<slug>.md → agents/<slug>.md (kept agents only)
+# `role-class` drives agentType derivation for in-session dispatch:
+#   registered → use explicit `agentType` field verbatim
+#   writer     → relay:leaf-worker
+#   reader     → relay:leaf-reader
+# `mechanism` and `provides` are required; every other field falls back to
+# a relay-internal hard default.
+#
+# `mechanism` is the per-role binding mechanism: in-session (native agent() leaf)
+# vs an acpx engine (acpx-claude / codex-session). Resolved per role at
+# Workflow-generation time (spec §5); there is no pipeline-wide dispatch fork.
+#
+# `modalities` carries the per-engine reasoning effort, chosen by work-type
+# (see docs). Claude is always `opus` with varying effort. Codex picks one of
+# two GPT-5.6 tiers: `gpt-5.6-sol` (demanding planning/architecture roles —
+# plan-writer, spec-simulator, fix-planner, panel-moderator), or
+# `gpt-5.6-terra` (everything else — both code-writing against an already-vetted
+# plan/spec and everyday judgment/review).
+# Simulator roles mirror the model+effort of the role that acts on their
+# artifact next (spec-simulator -> plan-writer; plan-simulator -> implementer),
+# so a simulation reflects the actual execution tier it's predicting risk for.
+# gpt-5.3-codex-spark is retired (no longer supported_in_api on this plan).
+# effort ∈ {low, medium, high, xhigh} (gpt-5.6 also supports max/ultra, unused here).
+# Opencode mirrors the same two-slot ladder with open-weight models served
+# via the OpenCode Go subscription: `opencode-go/kimi-k2.7-code` (sol-slot)
+# and `opencode-go/kimi-k2.6` (terra-slot).
+# The `opencode-go/` provider prefix IS the billing/routing pin — opencode
+# resolves provider from the model-id prefix, so no other connected provider
+# can serve these dispatches. No `effort` key: open-weight models define no
+# acpx effort values (ACP -32602 on `set effort`); the driver soft-degrades.
+# Requires acpx >= 0.12.0 (0.10.0 cannot apply a model to opencode sessions).
+# Caveat (verified 2026-07-13): the opencode adapter applies the model at the
+# session's FIRST prompt only — mid-session `set model` is silently sticky on
+# the original model. One session = one role = one model; never reuse.
+# acpx-dispatch.sh selects the active modality from the effective mechanism:
+# acpx-claude -> modalities.claude; codex-session -> modalities.codex;
+# acpx-opencode -> modalities.opencode.
+# `modalities.hybrid.engine` (claude|codex) MUST agree with `mechanism`
+# (codex => codex-session; claude => in-session|acpx-claude).
+# NOTE: presets.yaml does NOT own model-id selection; model routing lives in
+# acpx-dispatch.sh and is resolved at dispatch time from the active mechanism.
+#
+# 4.14.0 — the flat per-role `model:`/`effort:` pair is the IN-SESSION TIER SOURCE.
+# In-session tiers are ON by default; set `"in_session_tiers": false` in
+# `.claude/relay.json` to opt out and have every leaf inherit the session model.
+# When ON, Workflow generation sets `opts.model`/`opts.effort` on every in-session
+# agent() role node from these two fields. Do not hand-derive the table: run
+# `scripts/resolve-tier.sh --all` and transcribe what it prints (it is the single
+# resolution site, and it reads this file).
+#
+# `model` tiers — the ladder is four rungs, chosen by FAILURE MODE, not by task size:
+#   inherit  Track the session model (omit `opts.model`; `opts.effort` still applies).
+#            For SILENT-FAILURE roles: a wrong-but-plausible output is accepted
+#            downstream and nothing catches it. Launching the session on a stronger
+#            model is how you buy these roles more capability.
+#   opus     Bounded top-tier reasoning. Critics and fix-planners, whose miss mode is
+#            a false CLEAN or a plan that wastes a whole execution cycle.
+#   sonnet   Standard execution work whose output IS verified downstream (fixers are
+#            re-checked by critics; implementers by tests + code-reviewer; generators
+#            by evaluators).
+#   haiku    Mechanical or script-backed roles with a narrow decision surface.
+#
+# 4.46.0 — `category` groups the roles that the two model flags address. A role
+# carries at most one category, and a role with no category takes no flag:
+#   fixes         The roles that repair an artifact after a critic found a problem:
+#                 spec-fixer, plan-fixer, fix-planner, fix-coder. Every one is
+#                 `sonnet`, because a critic re-reads the result of the fix.
+#   verification  The critics themselves — the roles that decide whether the work
+#                 is done: spec-reviewer, code-reviewer, doc-reference-reviewer, and
+#                 the four ui-*-evaluator roles. Every one is `opus`, because the
+#                 miss mode is a false CLEAN that nothing else catches.
+# The flat `model:` line above is the DEFAULT for a categorized role. It is written
+# out per role, so `resolve-tier.sh <slug>` stays a one-line read. The two flags
+# `--fixes-model` and `--verification-model` (and the matching `fixes_model` and
+# `verification_model` keys in `.claude/relay.json`) replace that default for every
+# role of the named category. Each flag takes `sonnet`, `opus`, or `fable` — a
+# narrower list than the ladder above, for the reasons in parse-engine-agent.sh
+# step 1e. Keep every role of one category on one model: a category whose members
+# disagree makes the flag report a change it did not make.
+# Simulator roles keep mirroring the MODEL of the role that acts on their artifact
+# next (spec-simulator -> plan-writer; plan-simulator -> implementer), so a
+# simulation reflects the actual execution tier it is predicting risk for. That rule
+# is why plan-simulator sits at sonnet while spec-simulator sits at inherit. Effort
+# may sit one notch below the mirrored role's (spec-simulator high vs plan-writer
+# xhigh — a one-shot simulation, not authoring); plan-simulator matches implementer
+# on both axes.
+#
+# `modalities.*` stays the acpx-side dispatch tier and is untouched by the gate; acpx
+# dispatch consults flat `model:` only as a last-resort fallback for inline bindings,
+# exactly as before. `inherit` is meaningless on the acpx path (a cross-process worker
+# has no session model to inherit) — acpx roles take their tier from `modalities.*`.
+#
+# `permissions` records the role's INTENT (approve-all | approve-reads). Since 4.51.0
+# the acpx path no longer reads it: every acpx turn passes `--approve-all
+# --permission-policy bindings/acpx-policy.json`, the widest grant acpx exposes.
+# Before that the flag was gated on `approve-all`, so a role marked `approve-reads`
+# fell through to acpx's non-TTY default of `deny` and had every write refused with
+# nothing reporting it. The bg-sessions path still reads the key — `bg-dispatch.sh`
+# maps it to the `--permission-mode` it gives the background Claude session, so the
+# value stays meaningful there (see docs/bg-dispatch-contract.md).
+# A read-only role is kept read-only by its role body and its agent `tools:`
+# frontmatter, not by the acpx substrate. This is NOT a tool allowlist.
+#
+# `delegate_eligible` marks whether this role may be delegated to a sub-agent
+# (codex-session or acpx-claude running in an isolated worktree). Eligible roles
+# are those whose work is file-producing, self-contained, and safely restartable
+# (spec §5.1). Ineligible roles run in-session and coordinate other roles, hold
+# live state (e.g. server-runner), or operate as critics/synthesizers where
+# isolation would defeat the purpose. This field is required for all roles; the
+# relay runtime enforces delegate_eligible=true before wiring any delegation path.
+#
+# `model` is the in-session leaf dispatch model hint (flat field added in PR3 §5).
+# `one_shot` and `max_turns` are migrated from agent relay: blocks in PR3 §5.
+# `verify_artifact` is present only for the 4 roles that carry it (implementer,
+# test-writer, fix-coder, plan-writer) — also present in the role file frontmatter
+# as the authoritative source for parse-turn-protocol.sh.
+roles:
+  scout:
+    role-class: registered
+    agentType: relay:scout
+    model: sonnet
+    effort: low
+    one_shot: true
+    max_turns: 12
+    mechanism: acpx-claude
+    delegate_eligible: true
+    provides: [ROLE_DONE, CONTEXT_SUMMARY_PATH]
+    modalities:
+      claude: { model: opus, effort: medium }
+      codex:  { model: gpt-5.6-terra, effort: medium }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: claude }
+
+  panel-member:
+    role-class: writer
+    model: sonnet
+    effort: medium
+    one_shot: true
+    max_turns: 12
+    mechanism: in-session
+    delegate_eligible: false
+    provides: [ROLE_DONE, PANEL_PATH]
+    modalities:
+      claude: { model: opus, effort: high }
+      codex:  { model: gpt-5.6-terra, effort: high }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: claude }
+
+  panel-synthesizer:
+    role-class: writer
+    model: sonnet
+    effort: low
+    one_shot: true
+    max_turns: 12
+    mechanism: in-session
+    delegate_eligible: false
+    provides: [ROLE_DONE, SYNTH_PATH]
+    modalities:
+      claude: { model: opus, effort: low }
+      codex:  { model: gpt-5.6-terra, effort: low }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: claude }
+
+  panel-moderator:
+    role-class: writer
+    # Silent-failure: a weak moderation folds a bad panel into a confident verdict.
+    model: inherit
+    effort: xhigh
+    one_shot: true
+    max_turns: 12
+    mechanism: in-session
+    delegate_eligible: false
+    provides: [ROLE_DONE, MODERATOR_PATH]
+    modalities:
+      claude: { model: opus, effort: xhigh }
+      codex:  { model: gpt-5.6-sol, effort: xhigh }
+      opencode: { model: opencode-go/kimi-k2.7-code }
+      hybrid: { engine: claude }
+
+  spec-simulator:
+    role-class: reader
+    # Silent-failure, and mirrors plan-writer (the role that acts on its artifact next).
+    model: inherit
+    effort: high
+    one_shot: true
+    max_turns: 1
+    mechanism: acpx-claude
+    delegate_eligible: true
+    provides: [ROLE_DONE, FINDINGS_PATH]
+    modalities:
+      claude: { model: opus, effort: high }
+      codex:  { model: gpt-5.6-sol, effort: xhigh }
+      opencode: { model: opencode-go/kimi-k2.7-code }
+      hybrid: { engine: claude }
+
+  spec-fixer:
+    role-class: writer
+    category: fixes
+    model: sonnet
+    effort: medium
+    one_shot: true
+    max_turns: 12
+    mechanism: in-session
+    delegate_eligible: false
+    provides: [ROLE_DONE, SPEC_PATH, ROUND_RESULT]
+    modalities:
+      claude: { model: opus, effort: medium }
+      codex:  { model: gpt-5.6-terra, effort: medium }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: claude }
+
+  spec-reviewer:
+    role-class: reader
+    # Critic: miss mode is a false CLEAN that exits the refining loop early.
+    category: verification
+    model: opus
+    effort: medium
+    one_shot: true
+    max_turns: 12
+    mechanism: acpx-claude
+    delegate_eligible: false
+    provides: [ROLE_DONE, REVIEW]
+    modalities:
+      claude: { model: opus, effort: medium }
+      codex:  { model: gpt-5.6-terra, effort: medium }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: claude }
+
+  plan-simulator:
+    role-class: reader
+    # Mirrors implementer (the role that acts on its artifact next) — see header.
+    model: sonnet
+    effort: high
+    one_shot: true
+    max_turns: 1
+    mechanism: codex-session
+    delegate_eligible: true
+    provides: [ROLE_DONE, FINDINGS_PATH]
+    modalities:
+      claude: { model: opus, effort: xhigh }
+      codex:  { model: gpt-5.6-terra, effort: high }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: codex }
+
+  plan-fixer:
+    role-class: writer
+    category: fixes
+    model: sonnet
+    effort: medium
+    one_shot: true
+    max_turns: 12
+    mechanism: codex-session
+    delegate_eligible: true
+    provides: [ROLE_DONE, PLAN_PATH, ROUND_RESULT]
+    modalities:
+      claude: { model: opus, effort: medium }
+      codex:  { model: gpt-5.6-terra, effort: medium }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: codex }
+
+  plan-writer:
+    role-class: writer
+    # Silent-failure: a plausible-but-wrong plan is executed verbatim by implementer.
+    model: inherit
+    effort: xhigh
+    one_shot: true
+    max_turns: 3
+    verify_artifact: "{{PLAN_PATH}}"
+    mechanism: codex-session
+    delegate_eligible: true
+    isolation: worktree
+    permissions: approve-all
+    provides: [ROLE_DONE, PLAN_PATH, TASK_COUNT]
+    modalities:
+      claude: { model: opus, effort: xhigh }
+      codex:  { model: gpt-5.6-sol, effort: xhigh }
+      opencode: { model: opencode-go/kimi-k2.7-code }
+      hybrid: { engine: codex }
+
+  implementer:
+    role-class: writer
+    model: sonnet
+    effort: high
+    one_shot: true
+    max_turns: 5
+    verify_artifact: "{{REPO_ROOT}}"
+    mechanism: codex-session
+    delegate_eligible: true
+    isolation: worktree
+    permissions: approve-all
+    timeout_seconds: 1800
+    retries: 0
+    provides: [ROLE_DONE, STATUS, FILES_TOUCHED, REASON, QUESTION]
+    modalities:
+      claude: { model: opus, effort: high }
+      codex:  { model: gpt-5.6-terra, effort: high }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: codex }
+
+  code-reviewer:
+    role-class: registered
+    agentType: relay:code-reviewer
+    # Critic: miss mode is a false CLEAN on a diff nothing else re-checks.
+    category: verification
+    model: opus
+    effort: medium
+    one_shot: true
+    max_turns: 8
+    mechanism: acpx-claude
+    delegate_eligible: true
+    isolation: none
+    permissions: approve-reads
+    timeout_seconds: 900
+    retries: 1
+    provides: [ROLE_DONE, REVIEW]
+    modalities:
+      claude: { model: opus, effort: high }
+      codex:  { model: gpt-5.6-terra, effort: high }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: claude }
+
+  doc-reference-reviewer:
+    role-class: reader
+    # Script-backed: scripts/doc_reference_scan.py does the diff parse and reference
+    # extraction; the leaf only interprets its output. It is still a critic, so the
+    # verification category holds it and the category rule sets its model.
+    category: verification
+    model: opus
+    effort: low
+    one_shot: true
+    max_turns: 8
+    mechanism: acpx-claude
+    delegate_eligible: true
+    isolation: none
+    permissions: approve-reads
+    timeout_seconds: 900
+    retries: 1
+    provides: [ROLE_DONE, REVIEW]
+    modalities:
+      claude: { model: opus, effort: medium }   # [inferred] medium, NOT code-reviewer's high (§10)
+      codex:  { model: gpt-5.6-terra, effort: medium }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: claude }
+
+  fix-planner:
+    role-class: writer
+    # Plans a fix that fix-coder executes verbatim. A critic re-reads the result of
+    # that fix, so the fixes category holds this role and the category rule sets its
+    # model. The codex modality keeps the sol tier, which is a different axis.
+    category: fixes
+    model: sonnet
+    effort: high
+    one_shot: true
+    max_turns: 12
+    mechanism: in-session
+    delegate_eligible: false
+    provides: [ROLE_DONE, FIX_PLAN_PATH]
+    modalities:
+      claude: { model: opus, effort: high }
+      codex:  { model: gpt-5.6-sol, effort: high }
+      opencode: { model: opencode-go/kimi-k2.7-code }
+      hybrid: { engine: claude }
+
+  fix-coder:
+    role-class: writer
+    category: fixes
+    model: sonnet
+    effort: medium
+    one_shot: true
+    max_turns: 4
+    verify_artifact: "{{REPO_ROOT}}"
+    mechanism: codex-session
+    delegate_eligible: true
+    isolation: worktree
+    permissions: approve-all
+    provides: [ROLE_DONE, FILES_TOUCHED]
+    modalities:
+      claude: { model: opus, effort: medium }
+      codex:  { model: gpt-5.6-terra, effort: medium }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: codex }
+
+  scenario-writer:
+    role-class: writer
+    model: sonnet
+    effort: medium
+    one_shot: true
+    max_turns: 12
+    mechanism: in-session
+    delegate_eligible: false
+    provides: [ROLE_DONE, SCENARIOS_DIR, SCENARIO_COUNT]
+    modalities:
+      claude: { model: opus, effort: medium }
+      codex:  { model: gpt-5.6-terra, effort: medium }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: claude }
+
+  navigator:
+    role-class: writer
+    # Mechanical: walks an already-written scenario and records the result.
+    model: haiku
+    effort: low
+    one_shot: true
+    max_turns: 12
+    mechanism: in-session
+    delegate_eligible: false
+    provides: [ROLE_DONE, SCENARIO_RESULT]
+    modalities:
+      claude: { model: opus, effort: medium }
+      codex:  { model: gpt-5.6-terra, effort: medium }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: claude }
+
+  server-runner:
+    role-class: reader
+    # Mechanical: start the dev server, wait for ready, report the base URL.
+    model: haiku
+    effort: low
+    one_shot: true
+    max_turns: 12
+    mechanism: in-session
+    delegate_eligible: false  # delegated server dies with its acpx worker process → dead BASE_URLs downstream
+    provides: [SERVER_READY, SERVER_FAILED, BASE_URL]
+    modalities:
+      claude: { model: opus, effort: low }
+      codex:  { model: gpt-5.6-terra, effort: low }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: claude }
+
+  test-writer:
+    role-class: writer
+    model: sonnet
+    effort: high
+    one_shot: true
+    max_turns: 3
+    verify_artifact: "{{REPO_ROOT}}"
+    mechanism: codex-session
+    delegate_eligible: true
+    isolation: worktree
+    permissions: approve-all
+    provides: [ROLE_DONE, TEST_FILES_TOUCHED]
+    modalities:
+      claude: { model: opus, effort: high }
+      codex:  { model: gpt-5.6-terra, effort: high }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: codex }
+
+  ui-visual-evaluator:
+    role-class: reader
+    category: verification
+    model: opus
+    effort: low
+    one_shot: true
+    max_turns: 12
+    mechanism: in-session
+    delegate_eligible: false
+    provides: [ROLE_DONE, SCORES]
+    modalities:
+      claude: { model: opus, effort: medium }
+      codex:  { model: gpt-5.6-terra, effort: medium }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: claude }
+
+  ui-ux-evaluator:
+    role-class: reader
+    category: verification
+    model: opus
+    effort: low
+    one_shot: true
+    max_turns: 16
+    mechanism: in-session
+    delegate_eligible: false
+    provides: [ROLE_DONE, SCORES]
+    modalities:
+      claude: { model: opus, effort: medium }
+      codex:  { model: gpt-5.6-terra, effort: medium }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: claude }
+
+  ui-accessibility-evaluator:
+    role-class: reader
+    category: verification
+    model: opus
+    effort: low
+    one_shot: true
+    max_turns: 14
+    mechanism: in-session
+    delegate_eligible: false
+    provides: [ROLE_DONE, SCORES]
+    modalities:
+      claude: { model: opus, effort: medium }
+      codex:  { model: gpt-5.6-terra, effort: medium }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: claude }
+
+  ui-code-evaluator:
+    role-class: reader
+    category: verification
+    model: opus
+    effort: medium
+    one_shot: true
+    max_turns: 10
+    # Source-only static analysis: no browser, no screenshot vision. Structurally
+    # identical to spec-reviewer/doc-reference-reviewer, so it delegates cleanly.
+    mechanism: codex-session
+    delegate_eligible: true
+    isolation: none
+    permissions: approve-reads
+    provides: [ROLE_DONE, SCORES]
+    modalities:
+      claude: { model: opus, effort: medium }
+      codex:  { model: gpt-5.6-terra, effort: medium }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: codex }
+
+  ui-generator:
+    role-class: writer
+    model: sonnet
+    effort: medium
+    one_shot: true
+    max_turns: 20
+    # File-producing, self-contained, safely restartable (§5.1) — same shape as
+    # fix-coder/test-writer/implementer, which are all eligible. isolation: none
+    # is REQUIRED: the ui adapter is git-backed and its landing-verify runs
+    # `git status` in the loop's own worktree, so an isolated worktree would
+    # strand the fixer's edits where the loop cannot see or commit them.
+    mechanism: codex-session
+    delegate_eligible: true
+    isolation: none
+    permissions: approve-all
+    provides: [ROLE_DONE]
+    modalities:
+      claude: { model: opus, effort: medium }
+      codex:  { model: gpt-5.6-terra, effort: medium }
+      opencode: { model: opencode-go/kimi-k2.6 }
+      hybrid: { engine: codex }

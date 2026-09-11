@@ -1,0 +1,9 @@
+{
+  "name": "relay-flows",
+  "version": "1.0.0",
+  "private": true,
+  "description": "acpx flows driving unmodified upstream superpowers skills headless.",
+  "dependencies": {
+    "acpx": ">=0.13.2"
+  }
+}

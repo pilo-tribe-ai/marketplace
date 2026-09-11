@@ -1,0 +1,4 @@
+{"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"c8556d6e-2804-4506-83a5-5dc3765e7f44","update":{"sessionUpdate":"agent_message_chunk","content":{"type":"text","text":"I will run a simple echo command to confirm shell access."},"messageId":"msg_narration"}}}
+{"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"c8556d6e-2804-4506-83a5-5dc3765e7f44","update":{"sessionUpdate":"tool_call","title":"Terminal","toolCallId":"t1"}}}
+{"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"c8556d6e-2804-4506-83a5-5dc3765e7f44","update":{"sessionUpdate":"agent_message_chunk","content":{"type":"text","text":"B"},"messageId":"msg_envelope"}}}
+{"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"c8556d6e-2804-4506-83a5-5dc3765e7f44","update":{"sessionUpdate":"agent_message_chunk","content":{"type":"text","text":"LOCKED: probe reason"},"messageId":"msg_envelope"}}}

@@ -9,8 +9,67 @@
   },
   "plugins": [
     {
+      "name": "adr",
+      "source": "./plugins/adr"
+    },
+    {
       "name": "ai-fluency",
       "source": "./plugins/ai-fluency"
+    },
+    {
+      "name": "engineering",
+      "source": "./plugins/engineering"
+    },
+    {
+      "name": "git",
+      "source": "./plugins/git"
+    },
+    {
+      "name": "github",
+      "source": "./plugins/github"
+    },
+    {
+      "name": "osaat",
+      "source": "./plugins/osaat"
+    },
+    {
+      "name": "pr-flow",
+      "source": "./plugins/pr-flow"
+    },
+    {
+      "name": "prd",
+      "source": "./plugins/prd"
+    },
+    {
+      "name": "productivity",
+      "source": "./plugins/productivity"
+    },
+    {
+      "name": "prompt-fit",
+      "source": "./plugins/prompt-fit"
+    },
+    {
+      "name": "relay",
+      "source": "./plugins/relay"
+    },
+    {
+      "name": "superpowers",
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers"
+      }
+    },
+    {
+      "name": "thinktank",
+      "source": "./plugins/thinktank"
+    },
+    {
+      "name": "ui-judge",
+      "source": "./plugins/ui-judge"
+    },
+    {
+      "name": "wiki",
+      "source": "./plugins/wiki"
     }
   ]
 }
