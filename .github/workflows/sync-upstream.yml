@@ -34,6 +34,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Get every branch, not only main. The next step needs
+          # origin/sync-upstream to continue an open pull request.
+          fetch-depth: 0
+
+      - name: Start the sync branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          branch=sync-upstream
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          state="$(gh pr view "$branch" --json state -q .state 2>/dev/null || true)"
+          if [ "$state" = "OPEN" ] && git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+            # A pull request is open. Add to the branch it already shows, so the
+            # push stays a fast-forward and never rewrites what a person reads.
+            echo "Continuing the open pull request on $branch."
+            git checkout -B "$branch" "origin/$branch"
+          else
+            # No open pull request. Remove the old bot branch and start from main.
+            echo "Starting $branch again from main."
+            git push origin --delete "$branch" 2>/dev/null || true
+            git checkout -B "$branch" origin/main
+          fi
 
       - name: Install the read-only deploy key
         env:
@@ -74,24 +100,26 @@ jobs:
           "
           echo "Manifest and plugin manifests parse."
 
-      - name: Open a pull request
+      - name: Open or update the pull request
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if [ -z "$(git status --porcelain)" ]; then
+          branch=sync-upstream
+          git add -A
+
+          # .upstream-sync.json holds synced_at, which changes on every run.
+          # Ignore it here, or a run with no upstream change still makes a
+          # commit and a pull request.
+          if git diff --cached --quiet -- ':(exclude).upstream-sync.json'; then
             echo "Nothing changed upstream."
             exit 0
           fi
 
           commit="$(jq -r .commit .upstream-sync.json)"
-          branch="sync-upstream"
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -B "$branch"
-          git add -A
           git commit -m "Sync plugins from upstream ${commit:0:7}"
-          git push --force-with-lease origin "$branch"
+
+          # A fast-forward. The step above put the branch on the right base.
+          git push origin "$branch"
 
           body="$(printf 'Mirrored from upstream commit `%s`.\n\n## Plugin versions\n\n```json\n%s\n```\n' \
             "$commit" "$(jq .plugins .upstream-sync.json)")"
