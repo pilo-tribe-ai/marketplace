@@ -40,7 +40,7 @@ def test_the_plugin_is_listed_in_the_marketplace(plugin_root):
         .read_text(encoding="utf-8"))
     names = [entry["name"] for entry in marketplace["plugins"]]
     assert "adr" in names
-    assert marketplace["metadata"]["version"] == "1.7.0"
+    assert marketplace["metadata"]["version"] == "1.8.0"
 
 
 def test_both_blocks_carry_the_reversibility_bar(plugin_root):

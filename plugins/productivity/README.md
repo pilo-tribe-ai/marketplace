@@ -2,7 +2,72 @@
 
 Small, model-callable skills for moving work between sessions and agents.
 
-**Version:** 0.9.0
+**Version:** 0.10.0
+
+## What's New in v0.10.0
+
+- **`wrapping-up-sessions` can now finish from inside the worktree it is closing.** That is the
+  only place it normally runs, and three defects made the teardown unreachable there.
+- **It removes the worktree from inside, instead of `cd`-ing to the main checkout first.** A
+  worktree-isolated session runs behind a shell guard that refuses `cd <other checkout>` and
+  `git -C <other checkout>` alike, so the one removal path the skill offered did not exist from
+  where the skill runs. The premise was wrong as well: `git worktree remove` accepts its own path
+  and deletes the directory. Step 4 path A now runs in a fixed order — classify the lock,
+  `git checkout --detach` to free the branch, `git branch -d`, `git fetch --prune`, verify, and
+  remove the worktree **last**, because the remove deletes the directory the shell stands in and
+  every later command fails with "Unable to read current working directory".
+- **A harness lock is no longer read as a person's lock.** Claude Code locks a worktree itself and
+  names the owning session and pid in the reason, so the old "someone locked it deliberately, stop"
+  rule fired on the normal case: a session closing its own workspace, which is live by definition.
+  Step 4 reads the reason from `git worktree list --porcelain`. A `claude session <name> (pid <N>
+  ...)` reason on the worktree you are standing in is this session's own lock and is cleared with
+  `git worktree unlock`; on a different worktree the pid decides; any other reason is a person's
+  lock and still stops. `remove -f -f` is still never used.
+- **The skill tears down only the checkout it runs in, and never touches the main checkout.** Step 3
+  used to run `git checkout <default-branch>` and `git pull` there while step 2's clean-tree and
+  branch gates inspected only the worktree being removed — so it could drag another session off its
+  branch and pull onto its uncommitted work. Making the main checkout out of bounds removes the
+  ungated mutation by construction, rather than adding one more gate.
+- **The squash-merge check is promoted to its own step and now runs every time.** Detaching HEAD
+  puts it ON the branch tip, so `git branch -d` afterwards always succeeds — with an upstream or
+  without one — and the "not fully merged" refusal that used to trigger the v0.9.0 check never
+  happens in a worktree. The check would have gone dead exactly where it matters. It now runs
+  unconditionally in step 3, before anything is detached or deleted: exit 0 continues, exit 1 and
+  exit 2 still gather `git ls-remote` evidence and ask. Every run now carries landed-ness evidence,
+  not only the runs that hit a refusal.
+- **New `scripts/self-teardown-test.sh`** builds real repositories and asserts the four facts the
+  new path rests on: `-d` refuses while the branch is checked out here; `--detach` frees it and
+  makes `-d` succeed with and without an upstream; `git worktree remove` succeeds on its own path;
+  and a locked worktree refuses both `remove` and `remove --force` until `unlock`. It also asserts
+  the main checkout keeps its branch and its untracked files throughout.
+- **A new step 0 records the shell guard's rules,** because the skill meets them on every run: one
+  git command per call, literal absolute paths, and no redirect to another checkout.
+- **An adversarial review of the first draft found five more defects, all fixed here.**
+  - The worktree test itself was wrong. `git rev-parse --git-dir` prints an absolute path while
+    `--git-common-dir` stays relative once the working directory is below the repository root, so
+    the two differ as text in a MAIN checkout — and the skill would have taken the worktree path
+    against the shared checkout, detaching it and deleting its default branch. The test is now one
+    command, `git rev-parse --path-format=absolute --git-dir --git-common-dir`, correct from any
+    directory.
+  - The worktree path now comes from `git rev-parse --show-toplevel`, not the working directory.
+    `git worktree remove` accepts only a worktree's top level, and that failure would otherwise land
+    after the branch was already deleted.
+  - A worktree checked out on the default branch now keeps it. Refs are shared, so deleting it
+    breaks `git rebase <default>`, `git log <default>..HEAD` and `git diff <default>` in every other
+    checkout.
+  - The lock rule is scoped to the worktree being removed. `git worktree list --porcelain` lists
+    every worktree, so a sibling session's harness lock was stopping a teardown it cannot block.
+  - Step 2 now tells apart the two states behind an `@{u}` error. `git config --get
+    branch.<b>.merge` is empty when no upstream was ever set (still a hard stop) and prints a ref
+    when the branch was pushed and its remote-tracking ref was pruned — the ordinary state after a
+    merged branch is deleted, and the state this skill's own `fetch --prune` creates for the next
+    teardown in the same repository. That case no longer reports the work as local-only.
+  - Step 3's own invocation was refused by the guard. `bash "${CLAUDE_PLUGIN_ROOT}/scripts/...`
+    builds a command name from a variable, so the skill would have lost its only landed-ness
+    evidence. It now resolves the root with `echo` and calls the script by the printed literal path.
+- **Step 1 recognises a detached HEAD** as a half-finished teardown and resumes from it, instead of
+  reading `HEAD` as a branch name and reporting the work as local-only.
+- The step-2 hard-stop gates and `branch-landed.sh` itself are unchanged.
 
 ## What's New in v0.9.0
 
@@ -162,9 +227,11 @@ or Python packages. It contains:
   — qualified-name (`productivity:<slug>`) command-center skills for dispatching and
   tearing down work across sessions.
 - `scripts/branch-landed.sh` — the squash-merge equivalence check `wrapping-up-sessions`
-  calls at the `git branch -d` refusal, with `scripts/branch-landed-test.sh` next to it as
-  its fixture matrix. Both are plain bash and are called through `${CLAUDE_PLUGIN_ROOT}`,
+  runs in step 3, before it deletes anything, with `scripts/branch-landed-test.sh` next to it
+  as its fixture matrix. It is plain bash and is called through `${CLAUDE_PLUGIN_ROOT}`,
   because a forked skill runs with the user's repository as its working directory.
+- `scripts/self-teardown-test.sh` — the fixture behind step 4 path A. It proves a worktree can
+  be removed from inside itself, and that the main checkout survives the teardown untouched.
 
 The `handoff` skill keeps its upstream (unqualified) name and `argument-hint`
 verbatim; the two workflow skills use qualified names.
@@ -189,7 +256,7 @@ verbatim; the two workflow skills use qualified names.
 |-------|-------------|
 | `handoff` | Compact the current conversation into a handoff document for another agent to pick up. Renders the document directly in the reply (no file written), includes a "suggested skills" section, references existing artifacts (PRDs, plans, ADRs, commits) by path instead of duplicating them, and redacts secrets. Accepts an optional argument describing what the next session will focus on. |
 | `dispatch-background-sessions` | Hand ONE scoped work item to a separate background session in a single call: derive a session name, compose a short directive (role reset, work item, the areas other sessions own, parent pointer, standing constraints, first action), launch the session as a fork of the current one via `claude --bg --name <name> --resume "$CLAUDE_CODE_SESSION_ID" --fork-session "<directive>"` so it starts with full conversation context and begins working immediately, and verify via `claude logs` that the work was picked up. Accepts the work-item description. |
-| `wrapping-up-sessions` | Tear down a finished session's workspace: verify nothing is uncommitted, unpushed, or mid-merge/rebase (hard-stop gates), remove the worktree (`git worktree remove`), delete the local branch, return the working folder to the default branch, and pull latest. Runs in a forked context, so the calling session's folder still points at the removed worktree when it finishes. Destructive — refuses unless every gate passes, and asks before force-deleting a branch git reports as unmerged — but first runs `scripts/branch-landed.sh`, which compares content instead of ancestry and green-lights the delete without asking when it can prove the branch was squash- or rebase-merged. Does not check PR state; run it once the work has landed. |
+| `wrapping-up-sessions` | Tear down a finished session's workspace: verify nothing is uncommitted, unpushed, or mid-merge/rebase (hard-stop gates), confirm the work reached the default branch with `scripts/branch-landed.sh`, then delete the local branch and remove the worktree **from inside it**. Outside a worktree it returns to the default branch and pulls. It tears down only the checkout it runs in and never touches the main checkout. Runs in a forked context; on a worktree teardown the calling session's folder no longer exists when it finishes, so that session should be closed. Destructive — refuses unless every gate passes, and asks only when the equivalence check cannot prove the work landed. Does not check PR state; run it once the work has landed. |
 
 ## Configuration
 
