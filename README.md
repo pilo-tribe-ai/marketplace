@@ -59,7 +59,16 @@ the version of each plugin at the last sync.
 [`.github/workflows/sync-upstream.yml`](./.github/workflows/sync-upstream.yml)
 runs every day at 06:00 UTC. You can also start it by hand from the Actions tab.
 It copies the plugins, then opens a pull request on the `sync-upstream` branch
-if anything changed. An open pull request is updated, not duplicated.
+if anything changed.
+
+The `sync-upstream` branch belongs to the workflow. Do not commit to it by hand.
+While a pull request on it is open, each sync adds a commit to that same branch
+and rewrites the pull request text. When no pull request is open, the workflow
+removes the branch and starts it again from `main`.
+
+A sync that finds no upstream change makes no commit and no pull request.
+`.upstream-sync.json` holds a `synced_at` time that changes on every run, so the
+workflow ignores that one file when it looks for a change.
 
 The workflow needs one secret, `UPSTREAM_DEPLOY_KEY`:
 
@@ -67,6 +76,14 @@ The workflow needs one secret, `UPSTREAM_DEPLOY_KEY`:
 2. Add the public key to the upstream repository as a deploy key.
    Leave "Allow write access" off. The sync only reads.
 3. Add the private key to this repository as the secret `UPSTREAM_DEPLOY_KEY`.
+
+It also needs one repository setting. In **Settings → Actions → General →
+Workflow permissions**, turn on **Allow GitHub Actions to create and approve
+pull requests**. Leave the radio button on **Read repository contents and
+packages permissions**, because the workflow asks for the write access it needs
+in its own `permissions:` block. Without the setting, every sync pushes its
+branch and then stops with `GitHub Actions is not permitted to create or approve
+pull requests`.
 
 ### Running the sync on your machine
 
