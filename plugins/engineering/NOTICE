@@ -22,4 +22,10 @@ SOFTWARE.
 
 ---
 
-The skills under skills/ in this plugin were cloned verbatim from https://github.com/mattpocock/skills (skills/engineering/), authored by Matt Pocock and licensed under the MIT License above.
+The skills under skills/ in this plugin were cloned from https://github.com/mattpocock/skills
+(skills/engineering/) at commit 3cca18b368ae95cdbdebbff572ccafa662551015, authored by Matt Pocock
+and licensed under the MIT License above.
+
+The bodies are verbatim except for three documented changes, listed under "Deviations from
+upstream" in README.md: cross-skill references are namespaced to engineering:<name>, the
+Codex agents/openai.yaml files are dropped, and zoom-out is kept after upstream deleted it.

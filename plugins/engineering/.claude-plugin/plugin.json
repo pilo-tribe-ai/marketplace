@@ -1,7 +1,7 @@
 {
   "name": "engineering",
-  "version": "0.1.0",
-  "description": "Engineering skills (diagnose, tdd, triage, grill-with-docs, improve-codebase-architecture, to-issues, to-prd, zoom-out) cloned from mattpocock/skills",
+  "version": "0.2.0",
+  "description": "Engineering skills (codebase-design, diagnosing-bugs, domain-modeling, grill-with-docs, improve-codebase-architecture, prototype, research, tdd, to-spec, to-tickets, triage, wayfinder, zoom-out) cloned from mattpocock/skills",
   "author": {
     "name": "ai-advanced-futures"
   },
@@ -13,6 +13,8 @@
     "tdd",
     "debugging",
     "triage",
-    "architecture"
+    "architecture",
+    "research",
+    "prototyping"
   ]
 }
