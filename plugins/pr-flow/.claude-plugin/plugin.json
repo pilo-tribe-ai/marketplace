@@ -1,0 +1,22 @@
+{
+  "name": "pr-flow",
+  "displayName": "PR Flow",
+  "version": "0.10.0",
+  "description": "Bootstraps a repo-tailored PR review system (contract + per-concern lens skills) into any repository via /pr-flow:setup, then executes it \u2014 repo-agnostic reviewing-prs orchestrator with a built-in reviewing-goal-achievement lens, plus lifecycle skills to drive PRs to approval and merge.",
+  "author": {
+    "name": "Yassel Piloto",
+    "email": "yasselpiloto@gmail.com"
+  },
+  "homepage": "https://github.com/ai-advanced-futures/claude-code-dev-plugins",
+  "repository": "https://github.com/ai-advanced-futures/claude-code-dev-plugins",
+  "license": "MIT",
+  "keywords": [
+    "pr",
+    "review",
+    "github",
+    "workflow",
+    "bootstrap",
+    "contract",
+    "relay"
+  ]
+}

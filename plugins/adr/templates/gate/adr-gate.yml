@@ -1,0 +1,36 @@
+name: ADR gate
+
+on:
+  pull_request:
+    paths:
+      - "{{DIR}}/**"
+
+jobs:
+  # ADR-GATE:DETERMINISTIC:BEGIN
+  deterministic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Lint ADRs changed in this pull request
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+          mapfile -t CHANGED < <(git diff --name-only \
+            "origin/${{ github.base_ref }}...HEAD" | grep -E '\.md$' || true)
+          python3 scripts/adr/adr_lint.py --changed "${CHANGED[@]}"
+      - run: python3 scripts/adr/adr_index.py --check
+  # ADR-GATE:DETERMINISTIC:END
+  # ADR-GATE:MODEL:BEGIN
+  model:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Report ADR adherence findings
+        if: env.ANTHROPIC_API_KEY != ''
+        run: claude -p "/adr:check"
+  # ADR-GATE:MODEL:END

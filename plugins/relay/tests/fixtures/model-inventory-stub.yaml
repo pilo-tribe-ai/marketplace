@@ -1,0 +1,26 @@
+# Test-mode model inventory stub — the single source of truth for the
+# `selecting-the-right-model` RESOLUTION layer in tests (mirrors a runtime
+# `available_models` query). NOT a runtime artifact; tests only. See
+# plugins/relay/skills/selecting-the-right-model/SKILL.md.
+anthropic:
+  - claude-opus-4-8
+  - claude-sonnet-4-6
+  - claude-haiku-4-5
+codex:
+  - gpt-5.6-sol/low
+  - gpt-5.6-sol/medium
+  - gpt-5.6-sol/high
+  - gpt-5.6-sol/xhigh
+  - gpt-5.6-terra/low
+  - gpt-5.6-terra/medium
+  - gpt-5.6-terra/high
+  - gpt-5.6-terra/xhigh
+  - gpt-5.6-luna/low
+  - gpt-5.6-luna/medium
+  - gpt-5.6-luna/high
+opencode:
+  # Provider-qualified ids (prefix = serving provider); no effort variants —
+  # open-weight models define no acpx effort values.
+  - opencode-go/kimi-k2.7-code
+  - opencode-go/kimi-k2.6
+  - opencode-go/minimax-m3

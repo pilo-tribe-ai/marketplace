@@ -1,0 +1,18 @@
+{
+  "name": "engineering",
+  "version": "0.1.0",
+  "description": "Engineering skills (diagnose, tdd, triage, grill-with-docs, improve-codebase-architecture, to-issues, to-prd, zoom-out) cloned from mattpocock/skills",
+  "author": {
+    "name": "ai-advanced-futures"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/mattpocock/skills",
+  "repository": "https://github.com/mattpocock/skills",
+  "keywords": [
+    "engineering",
+    "tdd",
+    "debugging",
+    "triage",
+    "architecture"
+  ]
+}

@@ -1,0 +1,2 @@
+warning: something printed outside the JSON stream
+{"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"sess-1","update":{"sessionUpdate":"agent_message_chunk","messageId":"msg_d","content":{"type":"text","text":"STATUS=ok\nROLE_DONE"},"_meta":null}}}

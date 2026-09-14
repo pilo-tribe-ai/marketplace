@@ -1,0 +1,23 @@
+{
+  "name": "adr",
+  "displayName": "ADR",
+  "version": "0.1.0",
+  "description": "Scaffolds an architecture-decision-record corpus into any repository via /adr:setup, writes one ADR via /adr:new, and answers questions about past decisions via /adr:ask.",
+  "author": {
+    "name": "Yassel Piloto",
+    "email": "yasselpiloto@gmail.com"
+  },
+  "homepage": "https://github.com/ai-advanced-futures/claude-code-dev-plugins",
+  "repository": "https://github.com/ai-advanced-futures/claude-code-dev-plugins",
+  "license": "MIT",
+  "keywords": [
+    "adr",
+    "architecture",
+    "decisions",
+    "records",
+    "corpus",
+    "lint",
+    "index",
+    "scaffold"
+  ]
+}

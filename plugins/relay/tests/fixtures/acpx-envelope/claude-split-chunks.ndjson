@@ -1,0 +1,2 @@
+{"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"c8556d6e-2804-4506-83a5-5dc3765e7f44","update":{"sessionUpdate":"agent_message_chunk","content":{"type":"text","text":"ST"},"messageId":"msg_011CeknqYmLq9Gg2Gus1Zk4p"}}}
+{"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"c8556d6e-2804-4506-83a5-5dc3765e7f44","update":{"sessionUpdate":"agent_message_chunk","content":{"type":"text","text":"ATUS=ok\nROLE_DONE"},"messageId":"msg_011CeknqYmLq9Gg2Gus1Zk4p"}}}

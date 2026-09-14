@@ -1,0 +1,13 @@
+{
+  "name": "git",
+  "version": "4.0.0",
+  "description": "Interactive git rebase with guided conflict resolution — one skill, with the latest default branch as the default target",
+  "author": {
+    "name": "404pilo Platform Engineering",
+    "email": "404.pilo.code@gmail.com"
+  },
+  "homepage": "https://github.com/404pilo/claude-code.marketplace",
+  "repository": "https://github.com/404pilo/claude-code.marketplace",
+  "license": "MIT",
+  "keywords": ["git", "rebase", "conflict-resolution", "workflow", "version-control"]
+}

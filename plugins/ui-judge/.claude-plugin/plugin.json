@@ -1,0 +1,22 @@
+{
+  "name": "ui-judge",
+  "displayName": "UI Judge",
+  "version": "0.1.3",
+  "description": "Opens a web application in a browser, moves through it like a person, and rules whether it does what its own documentation says. Reports; never repairs.",
+  "author": {
+    "name": "Yassel Piloto",
+    "email": "yasselpiloto@gmail.com"
+  },
+  "homepage": "https://github.com/ai-advanced-futures/claude-code-dev-plugins",
+  "repository": "https://github.com/ai-advanced-futures/claude-code-dev-plugins",
+  "license": "MIT",
+  "keywords": [
+    "playwright",
+    "browser",
+    "testing",
+    "qa",
+    "judge",
+    "e2e",
+    "documentation"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "wiki",
+  "displayName": "Wiki",
+  "version": "0.2.0",
+  "description": "Scaffolds an OKF v0.2 knowledge wiki into any repository via /wiki:setup, ingests sources into it via /wiki:ingest, and answers questions from it via /wiki:ask.",
+  "author": {
+    "name": "Yassel Piloto",
+    "email": "yasselpiloto@gmail.com"
+  },
+  "homepage": "https://github.com/ai-advanced-futures/claude-code-dev-plugins",
+  "repository": "https://github.com/ai-advanced-futures/claude-code-dev-plugins",
+  "license": "MIT",
+  "keywords": [
+    "wiki",
+    "okf",
+    "knowledge",
+    "ingest",
+    "query",
+    "research",
+    "scaffold",
+    "bootstrap"
+  ]
+}
