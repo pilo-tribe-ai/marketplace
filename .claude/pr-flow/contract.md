@@ -159,8 +159,8 @@ declaring a PR green.
 
 - `claude plugin validate .` — `.claude-plugin/marketplace.json` schema: required fields, owner
   block, and whether each `plugins[]` entry's `source` resolves.
-- `claude plugin validate ./plugins/ai-fluency` — that plugin's `.claude-plugin/plugin.json`
-  schema and required fields.
+- `claude plugin validate ./plugins/<plugin>` — that plugin's `.claude-plugin/plugin.json`
+  schema and required fields. Run it for every directory in `plugins/`.
 
 **Read this scope note before you drop a finding as gate-owned.** These two commands check
 manifest JSON only. Their coverage is much narrower than the name suggests, and the gap is
@@ -174,9 +174,14 @@ repo owns** any of:
 - accuracy of any prose claim,
 - duplicate or drifted content across files.
 
-This repo has no CI workflow, no package manager, no linter, no type checker, and no test runner.
-Do not treat a check from another repo as present here. The frontmatter and anchor checks in PR
-\#1's test plan were ad-hoc shell commands, not committed scripts, so they are not gates.
+This repo has one GitHub Actions workflow, `.github/workflows/sync-upstream.yml`. It is not a
+gate. It runs on a schedule and on demand, never on a pull request, and it checks only the
+plugin copies that it just made. The mirrored plugins under `plugins/` carry their own test
+files, but this repo runs none of them.
+
+This repo has no package manager, no linter, and no type checker. Do not treat a check from
+another repo as present here. The frontmatter and anchor checks in PR \#1's test plan were
+ad-hoc shell commands, not committed scripts, so they are not gates.
 
 ---
 
